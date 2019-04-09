@@ -1,0 +1,28 @@
+# Ignore everything
+**
+
+# Allow files and directories
+!/static/**
+!/src/**
+!/package.json
+!/yarn.lock
+!/eslintrc.js
+!/gatsby-config.js
+!/gatsby-node.js
+!/gatsby-browser.js
+!/gatsby-ssr.js
+
+# Ignore unnecessary files inside allowed directories
+# This should go after the allowed directories
+**/*~
+**/*.log
+**/.DS_Store
+**/Thumbs.db
+
+#.git
+#.cache
+#node_modules
+#*.log
+#*.md
+#.editorconfig
+#LICENSE
