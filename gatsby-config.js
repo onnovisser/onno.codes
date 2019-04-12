@@ -7,11 +7,13 @@ module.exports = {
   siteMetadata: {
     siteUrl: config.siteUrl + pathPrefix,
   },
+  mapping: { "Mdx.fields.featuredImage": `File.absolutePath` },
   plugins: [
     'gatsby-plugin-glslify',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-emotion',
     'gatsby-plugin-sharp',
+    'gatsby-transformer-sharp',
     {
       resolve: 'gatsby-source-filesystem',
       options: {

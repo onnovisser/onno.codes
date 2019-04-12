@@ -1,38 +1,68 @@
-const _ = require('lodash')
+const _ = require('lodash');
+const path = require('path');
+const fs = require('fs');
 
 // graphql function returns a promise so we can use this little promise helper to have a nice result/error state
 const wrapper = promise =>
   promise
     .then(result => ({ result, error: null }))
-    .catch(error => ({ error, result: null }))
+    .catch(error => ({ error, result: null }));
 
-exports.onCreateNode = ({ node, actions }) => {
-  const { createNodeField } = actions
+exports.onCreateNode = ({ node, actions, getNode }) => {
+  const { createNodeField } = actions;
 
-  let slug
+  let slug;
 
   if (node.internal.type === 'Mdx') {
     if (
       Object.prototype.hasOwnProperty.call(node, 'frontmatter') &&
       Object.prototype.hasOwnProperty.call(node.frontmatter, 'slug')
     ) {
-      slug = `/${_.kebabCase(node.frontmatter.slug)}`
+      slug = `/${_.kebabCase(node.frontmatter.slug)}`;
     }
     if (
       Object.prototype.hasOwnProperty.call(node, 'frontmatter') &&
       Object.prototype.hasOwnProperty.call(node.frontmatter, 'title')
     ) {
-      slug = `/${_.kebabCase(node.frontmatter.title)}`
+      slug = `/${_.kebabCase(node.frontmatter.title)}`;
     }
-    createNodeField({ node, name: 'slug', value: slug })
+    createNodeField({ node, name: 'slug', value: slug });
+
+    const { frontmatter } = node;
+    const parent = getNode(node.parent);
+    if (parent.internal.type === 'File') {
+      const ext = path.extname(parent.absolutePath);
+      const featuredImageJpg = parent.absolutePath.replace(ext, '.jpg');
+      const featuredImagePng = parent.absolutePath.replace(ext, '.png');
+      const featuredImageWebp = parent.absolutePath.replace(ext, '.webp');
+      if (fs.existsSync(featuredImageJpg)) {
+        createNodeField({
+          name: `featuredImage`,
+          node,
+          value: featuredImageJpg,
+        });
+      } else if (fs.existsSync(featuredImagePng)) {
+        createNodeField({
+          name: `featuredImage`,
+          node,
+          value: featuredImagePng,
+        });
+      } else if (fs.existsSync(featuredImageWebp)) {
+        createNodeField({
+          name: `featuredImage`,
+          node,
+          value: featuredImageWebp,
+        });
+      }
+    }
   }
-}
+};
 
 exports.createPages = async ({ graphql, actions }) => {
-  const { createPage } = actions
+  const { createPage } = actions;
 
-  const postTemplate = require.resolve('./src/templates/post.js')
-  const categoryTemplate = require.resolve('./src/templates/category.js')
+  const postTemplate = require.resolve('./src/templates/post.js');
+  const categoryTemplate = require.resolve('./src/templates/category.js');
 
   const { error, result } = await wrapper(
     graphql(`
@@ -52,14 +82,14 @@ exports.createPages = async ({ graphql, actions }) => {
         }
       }
     `)
-  )
+  );
 
   if (!error) {
-    const posts = result.data.allMdx.edges
+    const posts = result.data.allMdx.edges;
 
     posts.forEach((edge, index) => {
-      const next = index === 0 ? null : posts[index - 1].node
-      const prev = index === posts.length - 1 ? null : posts[index + 1].node
+      const next = index === 0 ? null : posts[index - 1].node;
+      const prev = index === posts.length - 1 ? null : posts[index + 1].node;
 
       createPage({
         path: edge.node.fields.slug,
@@ -69,20 +99,20 @@ exports.createPages = async ({ graphql, actions }) => {
           prev,
           next,
         },
-      })
-    })
+      });
+    });
 
-    const categorySet = new Set()
+    const categorySet = new Set();
 
     _.each(posts, edge => {
       if (_.get(edge, 'node.frontmatter.categories')) {
         edge.node.frontmatter.categories.forEach(cat => {
-          categorySet.add(cat)
-        })
+          categorySet.add(cat);
+        });
       }
-    })
+    });
 
-    const categories = Array.from(categorySet)
+    const categories = Array.from(categorySet);
 
     categories.forEach(category => {
       createPage({
@@ -91,11 +121,11 @@ exports.createPages = async ({ graphql, actions }) => {
         context: {
           category,
         },
-      })
-    })
+      });
+    });
 
-    return
+    return;
   }
 
-  console.log(error)
-}
+  console.log(error);
+};

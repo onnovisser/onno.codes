@@ -1,17 +1,19 @@
-import React from 'react'
-import FeaturedWork from '../components/work/Featured'
-import Content from '../components/Content'
-import Page from '../components/Page'
+import React from 'react';
+import { css} from '@emotion/core'
+import SplitContent from '../components/SplitContent';
+import Page from '../components/Page';
+import FeaturedWork from '../components/work/Featured';
 
 function IndexPage() {
   return (
     <Page>
-      {/* <Container>
-        <Container>Hoi</Container>
-      </Container>
-      <FeaturedWork /> */}
+      <div css={css`
+        min-height: 90vh;
+      `} />
+        <FeaturedWork />
+
     </Page>
-  )
+  );
 }
 
-export default IndexPage
+export default IndexPage;

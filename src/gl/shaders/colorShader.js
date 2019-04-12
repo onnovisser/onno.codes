@@ -63,13 +63,13 @@ const ColorShader = {
     #pragma glslify: ca = require('glsl-chromatic-aberration')
 
 
-
+    // https://taylorpetrick.com/portfolio/webgl/lense
     vec4 ca6(sampler2D tex_sampler, vec2 tex_coord, vec2 res, vec2 dir) {
       vec2 delta = tex_coord - vec2(.5);
       float dist = distance(tex_coord, vec2(.5));
-      vec3 norm = normalize(vec3(delta.x, delta.y, 1.));// * sqrt(0.7 - pow(delta.x, 4.) - pow(delta.y, 4.)) ));
+      vec3 norm = normalize(vec3(delta.x, delta.y, sqrt(0.5 - pow(delta.x, 4.) - pow(delta.y, 4.))   ));// * sqrt(0.7 - pow(delta.x, 4.) - pow(delta.y, 4.)) ));
 
-      float factor = .4;//smoothstep(dist, 0.302, 0.3) * step(dist, 0.3);
+      float factor = .4;//smoothstep(dist, 0.502, 0.5) * step(dist, 0.5);
       vec3 refr_r = refract(vec3(0.0, 0.0, -1.0), norm, (1.0/1.150));
       vec3 refr_y = refract(vec3(0.0, 0.0, -1.0), norm, (1.0/1.153));
       vec3 refr_g = refract(vec3(0.0, 0.0, -1.0), norm, (1.0/1.156));

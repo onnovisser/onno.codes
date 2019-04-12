@@ -4,8 +4,8 @@ import MDXRenderer from 'gatsby-mdx/mdx-renderer';
 import kebabCase from 'lodash/kebabCase';
 import PropTypes from 'prop-types';
 import React from 'react';
-import config from '../config';
 import Layout from '../components/layout';
+import config from '../config';
 
 const Content = styled.article`
   grid-column: 2;
@@ -13,7 +13,7 @@ const Content = styled.article`
   max-width: 1000px;
   border-radius: 1rem;
   padding: 2rem 4.5rem;
-  background-color: ${props => props.theme.colors.bg};
+  background-color: ${props => props.theme.color.bg};
   z-index: 9000;
   margin-top: -3rem;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
@@ -59,8 +59,8 @@ const Post = ({
     <Layout customSEO>
       <Wrapper>
         <SEO postPath={slug} postNode={postNode} article />
-       
-          <Link to="/">{config.siteTitle}</Link>
+
+        <Link to="/">{config.siteTitle}</Link>
 
         <Content>
           <Title>{post.title}</Title>

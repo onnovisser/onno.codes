@@ -14,16 +14,16 @@ const base = theme => css`
     background-image: radial-gradient(white, rgba(255, 255, 255, 0) 90%),
       linear-gradient(
         to right,
-        ${theme.colors.ghost},
-        ${theme.colors.tropicalBlue}
+        ${theme.color.ghost},
+        ${theme.color.tropicalBlue}
       );
 
-    background: #fafafc;
+    background: ${theme.color.neutralLightest};
   }
 
   ::selection {
-    color: ${theme.colors.bg};
-    background: ${theme.colors.primary};
+    color: ${theme.color.bg};
+    background: ${theme.color.primary};
   }
 
   html {
@@ -32,14 +32,14 @@ const base = theme => css`
   }
 
   a {
-    color: ${theme.colors.primary};
+    /* color: ${theme.color.primary}; */
     text-decoration: none;
-    transition: all ${theme.transitions.normal};
+    /* transition: all ${theme.transitions.normal}; */
   }
 
-  a:hover {
-    color: ${theme.colors.primaryLight};
-  }
+  /* a:hover {
+    color: ${theme.color.primaryLight};
+  } */
   a:not([href]):not([tabindex]) {
     color: inherit;
     text-decoration: none;
@@ -59,7 +59,7 @@ const base = theme => css`
   h4,
   h5,
   h6 {
-    color: ${theme.colors.grey.dark};
+    color: ${theme.color.grey.dark};
     font-family: ${theme.fontFamily.serif};
   }
 
@@ -89,7 +89,7 @@ const base = theme => css`
   blockquote::before {
     content: '';
     position: absolute;
-    background: ${theme.colors.primary};
+    background: ${theme.color.primary};
     height: 100%;
     width: 6px;
     margin-left: -1.6rem;
@@ -98,6 +98,10 @@ const base = theme => css`
     margin-top: 0;
     margin-bottom: 1rem;
     overflow: auto;
+  }
+
+  .dg.ac {
+    z-index: 999 !important;
   }
 `;
 
