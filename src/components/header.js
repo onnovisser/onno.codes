@@ -2,10 +2,14 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Link } from 'gatsby';
 import React from 'react';
-import Content from './Content';
+import Content from './content';
+import EmailIcon from './icon/email';
+import TwitterIcon from './icon/twitter';
+import GithubIcon from './icon/github';
 
 const TextLink = styled(Link)`
   color: ${props => props.theme.color.neutralDark};
+  font-family: ${props => props.theme.fontFamily.accent};
   margin-right: 40px;
 `;
 
@@ -44,7 +48,7 @@ function Header() {
             href="mailto:visser.onno@gmail.com"
             aria-label="Email Onno Visser"
           >
-            ✉️
+            <EmailIcon />
           </IconLink>
           <IconLink
             href="https://twitter.com/_onnovisser"
@@ -52,7 +56,7 @@ function Header() {
             rel="noopener noreferrer"
             aria-label="Onno Visser on Twitter"
           >
-            🐦
+            <TwitterIcon />
           </IconLink>
           <IconLink
             href="https://github.com/onnovisser"
@@ -60,7 +64,7 @@ function Header() {
             rel="noopener noreferrer"
             aria-label="Onno Visser on Github"
           >
-            🐙+🐱
+            <GithubIcon />
           </IconLink>
         </nav>
       </Content>

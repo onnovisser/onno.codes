@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { css } from '@emotion/core'
-import init from '../gl/scene'
+import React, { useEffect, useState, useRef } from 'react';
+import { css } from '@emotion/core';
+import init from '../gl/scene';
 
 function Background() {
-  const [visible, setVisible] = useState(false)
-  const ref = useRef()
+  const [visible, setVisible] = useState(false);
+  const ref = useRef();
 
   useEffect(() => {
     init(ref.current).then(() => {
-      setVisible(true)
-    })
-  }, [])
+      setVisible(true);
+    });
+  }, []);
 
   return (
     <canvas
@@ -31,7 +31,7 @@ function Background() {
       `}
       ref={ref}
     />
-  )
+  );
 }
 
-export default Background
+export default Background;

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 function BrowserOnlyRender({ children }) {
-  const [render, setRender] = useState(false)
+  const [render, setRender] = useState(false);
 
   useEffect(() => {
-    setRender(true)
-  }, [])
+    setRender(true);
+  }, []);
 
-  return render ? children : null
+  return render ? children : null;
 }
 
-export default BrowserOnlyRender
+export default BrowserOnlyRender;

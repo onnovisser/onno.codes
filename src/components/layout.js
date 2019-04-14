@@ -3,10 +3,10 @@ import { ThemeProvider } from 'emotion-theming';
 import React, { lazy, Suspense } from 'react';
 import theme from '../config/theme';
 import globalStyles from '../style/global';
-import BrowserOnlyRender from './BrowserOnlyRender';
-import Header from './Header';
+import BrowserOnlyRender from './browserOnlyRender';
+import Header from './header';
 
-const Background = lazy(() => import('./Background'));
+const Background = lazy(() => import('./background'));
 
 function Layout({ children }) {
   return (

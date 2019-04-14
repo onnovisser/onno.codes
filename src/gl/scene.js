@@ -12,6 +12,7 @@ async function init(canvas) {
   initScene(canvas);
   initGeometry();
   renderer.setAnimationLoop(update);
+  setTimeout(() => renderer.setAnimationLoop(null), 2000);
   window.addEventListener('resize', onResize);
 }
 

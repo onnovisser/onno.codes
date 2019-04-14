@@ -1,4 +1,3 @@
-
 class TerrainMaterial extends THREE.MeshBasicMaterial {
   static shader = {
     uniforms: {
@@ -7,24 +6,26 @@ class TerrainMaterial extends THREE.MeshBasicMaterial {
       rippleDecay: { value: 0.5 },
       rippleSpeed: { value: 5 },
       rippleRadius: { value: 0.7 },
-      uTexture: { value: textureLoader.load(require('./images/matcaps/Warmth5.png'))},
+      uTexture: {
+        value: textureLoader.load(require('./images/matcaps/Warmth5.png')),
+      },
       impactPos: {
         value: [
           new THREE.Vector3(),
           new THREE.Vector3(),
           new THREE.Vector3(),
-          new THREE.Vector3()
-        ]
+          new THREE.Vector3(),
+        ],
       },
       impactDir: {
         value: [
           new THREE.Vector3(),
           new THREE.Vector3(),
           new THREE.Vector3(),
-          new THREE.Vector3()
-        ]
+          new THREE.Vector3(),
+        ],
       },
-      impactTime: { value: [-10000, -10000, -10000, -10000] }
+      impactTime: { value: [-10000, -10000, -10000, -10000] },
     },
     /*
 
@@ -115,7 +116,7 @@ class TerrainMaterial extends THREE.MeshBasicMaterial {
     // gl_FragColor = vec4(mix(color1, color2, 1.), 1.0 );
     // // gl_FragColor.rgb = blendOverlay(gl_FragColor.rgb, color2);
     // gl_FragColor = vec4(dot(normalize(vCamPos), vNormal ));
-      `
+      `,
   };
 
   impactIndex = -1;
@@ -128,7 +129,7 @@ class TerrainMaterial extends THREE.MeshBasicMaterial {
       metalness: 0,
       color: 0xffffff,
       envMap: textureCube,
-      envMapIntensity: 3
+      envMapIntensity: 3,
     });
 
     this.onBeforeCompile = shader => {
@@ -139,7 +140,7 @@ class TerrainMaterial extends THREE.MeshBasicMaterial {
         ${RippleMaterial.shader.vertexParameters}
         ${shader.vertexShader}
       `.replace(
-        "#include <project_vertex>",
+        '#include <project_vertex>',
         `
         ${RippleMaterial.shader.vertexPosition}
         #include <project_vertex>
@@ -150,7 +151,7 @@ class TerrainMaterial extends THREE.MeshBasicMaterial {
         ${RippleMaterial.shader.fragmentParameters}
         ${shader.fragmentShader}
       `.replace(
-        "gl_FragColor = vec4( outgoingLight, diffuseColor.a );",
+        'gl_FragColor = vec4( outgoingLight, diffuseColor.a );',
         `
         gl_FragColor = vec4( outgoingLight, diffuseColor.a );
         ${RippleMaterial.shader.fragmentDiffuse}

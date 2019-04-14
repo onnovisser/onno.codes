@@ -1,7 +1,6 @@
-import { wrapRootElement as wrap } from './src/utils/wrap-root-element.js'
-import 'typeface-bitter'
-import 'typeface-open-sans'
-import 'prismjs/themes/prism-tomorrow.css'
+import { wrapRootElement as wrap } from './src/utils/wrapRootElement.js';
+import 'typeface-lekton';
+import 'typeface-open-sans';
+import 'prismjs/themes/prism-tomorrow.css';
 
-
-export const wrapRootElement = wrap
+export const wrapRootElement = wrap;

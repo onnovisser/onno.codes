@@ -11,35 +11,33 @@ const base = theme => css`
   }
 
   body {
-    background-image: radial-gradient(white, rgba(255, 255, 255, 0) 90%),
-      linear-gradient(
-        to right,
-        ${theme.color.ghost},
-        ${theme.color.tropicalBlue}
-      );
-
+    padding-top: 10vh;
     background: ${theme.color.neutralLightest};
   }
 
   ::selection {
-    color: ${theme.color.bg};
+    color: ${theme.color.neutralLightest};
     background: ${theme.color.primary};
   }
 
   html {
-    font-family: ${theme.fontFamily.sansSerif};
+    font-family: ${theme.fontFamily.base};
     font-size: ${theme.baseFontSize};
   }
 
   a {
-    /* color: ${theme.color.primary}; */
     text-decoration: none;
-    /* transition: all ${theme.transitions.normal}; */
   }
 
-  /* a:hover {
-    color: ${theme.color.primaryLight};
-  } */
+  a:not([class]) {
+    color: ${theme.color.primary};
+    transition: all ${theme.transitions.fast};
+
+    &:hover {
+      color: ${theme.color.primaryAccent};
+    }
+  }
+
   a:not([href]):not([tabindex]) {
     color: inherit;
     text-decoration: none;
@@ -60,7 +58,8 @@ const base = theme => css`
   h5,
   h6 {
     color: ${theme.color.grey.dark};
-    font-family: ${theme.fontFamily.serif};
+    font-family: ${theme.fontFamily.accent};
+    /* font-weight: 700; */
   }
 
   /*  =====  MDX  ===== */

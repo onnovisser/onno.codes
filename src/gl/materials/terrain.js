@@ -278,7 +278,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     emitter.on('update', this.update);
 
     gui
-      .addNew('terrain', .99, 0, 1)
+      .addNew('terrain', 0.99, 0, 1)
       .onChange(v => (this.uniforms.terrainProgress.value = v));
   };
 

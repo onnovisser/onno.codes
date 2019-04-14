@@ -1,19 +1,19 @@
 import { css } from '@emotion/core';
 import React from 'react';
 import Page from '../components/page';
-import FeaturedWork from '../components/work/featured';
+import AllWork from '../components/work/all';
 
-function IndexPage() {
+function WorkPage() {
   return (
     <Page>
       <div
         css={css`
-          min-height: 80vh;
+          min-height: 90vh;
         `}
       />
-      <FeaturedWork />
+      <AllWork />
     </Page>
   );
 }
 
-export default IndexPage;
+export default WorkPage;

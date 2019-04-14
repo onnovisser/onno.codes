@@ -1,9 +1,6 @@
 import { lighten } from 'polished';
 
 const color = {
-  tropicalBlue: '#e9effb',
-  ghost: '#e2e4ed',
-
   primary: '#ff4e44', // Color for buttons or links
   primaryAccent: '#e70755',
   primaryLight: lighten(0.05, '#d02e77'),
@@ -29,7 +26,7 @@ const size = {
 };
 
 const transitions = {
-  normal: '0.5s',
+  fast: '250ms',
 };
 
 const fontSize = {
@@ -37,8 +34,8 @@ const fontSize = {
 };
 
 const fontFamily = {
-  serif: `'Bitter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', serif`,
-  sansSerif: `'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif`,
+  base: `'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif`,
+  accent: `'Lekton', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', serif`,
 };
 
 const breakpoints = {

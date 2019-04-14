@@ -77,9 +77,13 @@ function UnrealBloomPass(resolution, strength, radius, threshold) {
   resy = Math.round(this.resolution.y / 2);
 
   for (let i = 0; i < this.nMips; i++) {
-    this.separableBlurMaterials.push(this.getSeperableBlurMaterial(kernelSizeArray[i]));
+    this.separableBlurMaterials.push(
+      this.getSeperableBlurMaterial(kernelSizeArray[i])
+    );
 
-    this.separableBlurMaterials[i].uniforms['texSize'].value = new THREE.Vector2(resx, resy);
+    this.separableBlurMaterials[i].uniforms[
+      'texSize'
+    ].value = new THREE.Vector2(resx, resy);
 
     resx = Math.round(resx / 2);
 
@@ -88,11 +92,21 @@ function UnrealBloomPass(resolution, strength, radius, threshold) {
 
   // Composite material
   this.compositeMaterial = this.getCompositeMaterial(this.nMips);
-  this.compositeMaterial.uniforms['blurTexture1'].value = this.renderTargetsVertical[0].texture;
-  this.compositeMaterial.uniforms['blurTexture2'].value = this.renderTargetsVertical[1].texture;
-  this.compositeMaterial.uniforms['blurTexture3'].value = this.renderTargetsVertical[2].texture;
-  this.compositeMaterial.uniforms['blurTexture4'].value = this.renderTargetsVertical[3].texture;
-  this.compositeMaterial.uniforms['blurTexture5'].value = this.renderTargetsVertical[4].texture;
+  this.compositeMaterial.uniforms[
+    'blurTexture1'
+  ].value = this.renderTargetsVertical[0].texture;
+  this.compositeMaterial.uniforms[
+    'blurTexture2'
+  ].value = this.renderTargetsVertical[1].texture;
+  this.compositeMaterial.uniforms[
+    'blurTexture3'
+  ].value = this.renderTargetsVertical[2].texture;
+  this.compositeMaterial.uniforms[
+    'blurTexture4'
+  ].value = this.renderTargetsVertical[3].texture;
+  this.compositeMaterial.uniforms[
+    'blurTexture5'
+  ].value = this.renderTargetsVertical[4].texture;
   this.compositeMaterial.uniforms['bloomStrength'].value = strength;
   this.compositeMaterial.uniforms['bloomRadius'].value = 0.1;
   this.compositeMaterial.needsUpdate = true;
@@ -106,7 +120,9 @@ function UnrealBloomPass(resolution, strength, radius, threshold) {
     new THREE.Vector3(1, 1, 1),
     new THREE.Vector3(1, 1, 1),
   ];
-  this.compositeMaterial.uniforms['bloomTintColors'].value = this.bloomTintColors;
+  this.compositeMaterial.uniforms[
+    'bloomTintColors'
+  ].value = this.bloomTintColors;
 
   this.copyUniforms = THREE.UniformsUtils.clone(CopyShader.uniforms);
   this.copyUniforms['opacity'].value = 1.0;
@@ -162,7 +178,9 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
       this.renderTargetsHorizontal[i].setSize(resx, resy);
       this.renderTargetsVertical[i].setSize(resx, resy);
 
-      this.separableBlurMaterials[i].uniforms['texSize'].value = new THREE.Vector2(resx, resy);
+      this.separableBlurMaterials[i].uniforms[
+        'texSize'
+      ].value = new THREE.Vector2(resx, resy);
 
       resx = Math.round(resx / 2);
       resy = Math.round(resy / 2);
@@ -203,15 +221,28 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
     for (var i = 0; i < this.nMips; i++) {
       this.quad.material = this.separableBlurMaterials[i];
 
-      this.separableBlurMaterials[i].uniforms['colorTexture'].value = inputRenderTarget.texture;
-      this.separableBlurMaterials[i].uniforms['direction'].value = UnrealBloomPass.BlurDirectionX;
-      renderer.render(this.scene, this.camera, this.renderTargetsHorizontal[i], true);
+      this.separableBlurMaterials[i].uniforms['colorTexture'].value =
+        inputRenderTarget.texture;
+      this.separableBlurMaterials[i].uniforms['direction'].value =
+        UnrealBloomPass.BlurDirectionX;
+      renderer.render(
+        this.scene,
+        this.camera,
+        this.renderTargetsHorizontal[i],
+        true
+      );
 
-      this.separableBlurMaterials[i].uniforms['colorTexture'].value = this.renderTargetsHorizontal[
-        i
-      ].texture;
-      this.separableBlurMaterials[i].uniforms['direction'].value = UnrealBloomPass.BlurDirectionY;
-      renderer.render(this.scene, this.camera, this.renderTargetsVertical[i], true);
+      this.separableBlurMaterials[i].uniforms[
+        'colorTexture'
+      ].value = this.renderTargetsHorizontal[i].texture;
+      this.separableBlurMaterials[i].uniforms['direction'].value =
+        UnrealBloomPass.BlurDirectionY;
+      renderer.render(
+        this.scene,
+        this.camera,
+        this.renderTargetsVertical[i],
+        true
+      );
 
       inputRenderTarget = this.renderTargetsVertical[i];
     }
@@ -221,14 +252,23 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
     this.quad.material = this.compositeMaterial;
     this.compositeMaterial.uniforms['bloomStrength'].value = this.strength;
     this.compositeMaterial.uniforms['bloomRadius'].value = this.radius;
-    this.compositeMaterial.uniforms['bloomTintColors'].value = this.bloomTintColors;
+    this.compositeMaterial.uniforms[
+      'bloomTintColors'
+    ].value = this.bloomTintColors;
 
-    renderer.render(this.scene, this.camera, this.renderTargetsHorizontal[0], true);
+    renderer.render(
+      this.scene,
+      this.camera,
+      this.renderTargetsHorizontal[0],
+      true
+    );
 
     // Blend it additively over the input texture
 
     this.quad.material = this.materialCopy;
-    this.copyUniforms['tDiffuse'].value = this.renderTargetsHorizontal[0].texture;
+    this.copyUniforms[
+      'tDiffuse'
+    ].value = this.renderTargetsHorizontal[0].texture;
 
     if (maskActive) renderer.context.enable(renderer.context.STENCIL_TEST);
 

@@ -18,7 +18,11 @@ function EffectComposer(renderer, renderTarget) {
     };
 
     var size = renderer.getDrawingBufferSize();
-    renderTarget = new THREE.WebGLRenderTarget(size.width, size.height, parameters);
+    renderTarget = new THREE.WebGLRenderTarget(
+      size.width,
+      size.height,
+      parameters
+    );
     renderTarget.texture.name = 'EffectComposer.rt1';
   }
 
@@ -66,7 +70,13 @@ Object.assign(EffectComposer.prototype, {
 
       if (pass.enabled === false) continue;
 
-      pass.render(this.renderer, this.writeBuffer, this.readBuffer, delta, maskActive);
+      pass.render(
+        this.renderer,
+        this.writeBuffer,
+        this.readBuffer,
+        delta,
+        maskActive
+      );
 
       if (pass.needsSwap) {
         if (maskActive) {
@@ -74,7 +84,12 @@ Object.assign(EffectComposer.prototype, {
 
           context.stencilFunc(context.NOTEQUAL, 1, 0xffffffff);
 
-          this.copyPass.render(this.renderer, this.writeBuffer, this.readBuffer, delta);
+          this.copyPass.render(
+            this.renderer,
+            this.writeBuffer,
+            this.readBuffer,
+            delta
+          );
 
           context.stencilFunc(context.EQUAL, 1, 0xffffffff);
         }

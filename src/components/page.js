@@ -1,7 +1,7 @@
 import { css } from '@emotion/core';
 import { graphql, useStaticQuery } from 'gatsby';
 import React from 'react';
-import SEO from './SEO';
+import SEO from './seo';
 
 Page.defaultProps = {
   customSEO: false,

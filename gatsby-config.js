@@ -1,13 +1,13 @@
 const config = require('./src/config');
 
-const pathPrefix = config.pathPrefix === '/' ? '' : config.pathPrefix
+const pathPrefix = config.pathPrefix === '/' ? '' : config.pathPrefix;
 
 module.exports = {
   pathPrefix: config.pathPrefix,
   siteMetadata: {
     siteUrl: config.siteUrl + pathPrefix,
   },
-  mapping: { "Mdx.fields.featuredImage": `File.absolutePath` },
+  mapping: { 'Mdx.fields.featuredImage': `File.absolutePath` },
   plugins: [
     'gatsby-plugin-glslify',
     'gatsby-plugin-react-helmet',
@@ -75,6 +75,5 @@ module.exports = {
       },
     },
     // 'gatsby-plugin-offline',
-    // 'gatsby-plugin-netlify',
   ],
-}
+};

@@ -4,8 +4,7 @@ import kebabCase from 'lodash/kebabCase';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Layout from '../components/layout';
-import Wrapper from '../components/Wrapper';
+import Wrapper from '../components/wrapper';
 import config from '../config';
 
 const Content = styled.div`
@@ -35,21 +34,19 @@ const Category = ({
     allMdx: { group },
   },
 }) => (
-  <Layout>
-    <Wrapper>
-      <Helmet title={`Categories | ${config.siteTitle}`} />
-      <Link to="/">{config.siteTitle}</Link>
+  <Wrapper>
+    <Helmet title={`Categories | ${config.siteTitle}`} />
+    <Link to="/">{config.siteTitle}</Link>
 
-      {group.map(category => (
-        <Title key={category.fieldValue}>
-          <Link to={`/categories/${kebabCase(category.fieldValue)}`}>
-            {category.fieldValue}
-          </Link>{' '}
-          ({category.totalCount})
-        </Title>
-      ))}
-    </Wrapper>
-  </Layout>
+    {group.map(category => (
+      <Title key={category.fieldValue}>
+        <Link to={`/categories/${kebabCase(category.fieldValue)}`}>
+          {category.fieldValue}
+        </Link>{' '}
+        ({category.totalCount})
+      </Title>
+    ))}
+  </Wrapper>
 );
 
 export default Category;

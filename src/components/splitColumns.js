@@ -2,7 +2,7 @@ import { css } from '@emotion/core';
 import React from 'react';
 import mq from '../style/mq';
 
-function SplitColumns({ left, right, flipped }) {
+function SplitColumns({ left, right, flipped, ...rest }) {
   return (
     <div
       css={({ color }) => css`
@@ -13,18 +13,7 @@ function SplitColumns({ left, right, flipped }) {
 
         ${mq.mediumUp} {
           flex-direction: row;
-/*
-          &::before {
-            content: '';
-            display: block;
-            width: 1px;
-            height: 100%;
-            position: absolute;
-            right: 50%;
-            top: 0;
-            background-color: ${color.neutralLight};
-            z-index: 1;
-          } */
+
           > div {
             width: 50%;
             flex: 1 1 50%;
@@ -44,13 +33,14 @@ function SplitColumns({ left, right, flipped }) {
                   border-left: none;
                 }
 
-                &:first-child {
+                &:first-of-type {
                   border-left: 1px solid ${color.neutralLight};
                 }
               }
             `}
         }
       `}
+      {...rest}
     >
       <div>{left}</div>
       <div>{right}</div>
