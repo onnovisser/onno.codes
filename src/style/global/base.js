@@ -72,7 +72,7 @@ const base = theme => css`
     font-size: 1.953rem;
   }
 
-  ${mq.mUp} {
+  ${mq.mediumUp} {
     h2 {
       font-size: 2.074rem;
     }

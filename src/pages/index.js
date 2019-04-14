@@ -1,17 +1,17 @@
+import { css } from '@emotion/core';
 import React from 'react';
-import { css} from '@emotion/core'
-import SplitContent from '../components/SplitContent';
 import Page from '../components/Page';
-import FeaturedWork from '../components/work/Featured';
+import FeaturedWork from '../components/work/Feat';
 
 function IndexPage() {
   return (
     <Page>
-      <div css={css`
-        min-height: 90vh;
-      `} />
-        <FeaturedWork />
-
+      <div
+        css={css`
+          min-height: 90vh;
+        `}
+      />
+      <FeaturedWork />
     </Page>
   );
 }

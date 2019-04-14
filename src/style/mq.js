@@ -1,12 +1,12 @@
 const breakpoints = {
-  s: 500,
-  m: 800,
-  l: 1100,
-  xl: 1600,
-}
+  small: 500,
+  medium: 800,
+  large: 1100,
+  xlarge: 1600,
+};
 
-const ZERO = 0
-const INFINITY = 99999
+const ZERO = 0;
+const INFINITY = 99999;
 
 /**
  * A Media Query utility for CSS-in-JS / React
@@ -36,7 +36,7 @@ const INFINITY = 99999
  * mq({ min: 300, max: 900 })
  */
 function _mq(range) {
-  return createQueryString(...parseObject(range))
+  return createQueryString(...parseObject(range));
 }
 
 const mq = new Proxy(_mq, {
@@ -44,9 +44,9 @@ const mq = new Proxy(_mq, {
     // if (prop === 'is') {
     //   return isMQ;
     // }
-    return createQueryString(...parseProp(prop))
+    return createQueryString(...parseProp(prop));
   },
-})
+});
 
 /**
  * Checks the window width against a media range.
@@ -55,12 +55,12 @@ const mq = new Proxy(_mq, {
  * @returns {bool} Whether the page width is within the range
  */
 function _isMQ(range) {
-  return window.matchMedia(createQuery(...parseObject(range))).matches
+  return window.matchMedia(createQuery(...parseObject(range))).matches;
 }
 
 const isMQ = new Proxy(_isMQ, {
   get: (object, prop) => isMQ(prop),
-})
+});
 
 // /**
 //  * Creates a CSS media query string for a given range
@@ -74,33 +74,35 @@ const isMQ = new Proxy(_isMQ, {
 // }
 
 function createQueryString(min, max) {
-  return `@media ${createQuery(min, max)}`
+  return `@media ${createQuery(min, max)}`;
 }
 
 function createQuery(min = ZERO, max = INFINITY) {
-  return `(min-width: ${min}px) and (max-width: ${max}px)`
+  return `(min-width: ${min}px) and (max-width: ${max}px)`;
 }
 
 function parseProp(name) {
-  let parts
-  let min
-  let max
+  let parts;
+  let min;
+  let max;
 
   if ((parts = name.match(/(\w+)Up$/))) {
-    min = breakpoints[parts[1]]
+    min = breakpoints[parts[1]];
   } else if ((parts = name.match(/(\w+)Down$/))) {
-    max = breakpoints[parts[1]] - 1
+    max = breakpoints[parts[1]] - 1;
   } else if ((parts = name.match(/(\w+)To(\w+)/))) {
-    min = breakpoints[parts[1]]
-    max = breakpoints[parts[2].toLowerCase()] - 1
+    min = breakpoints[parts[1]];
+    max = breakpoints[parts[2].toLowerCase()] - 1;
   }
 
-  return [min, max]
+  return [min, max];
 }
 
 function parseObject(range) {
-  return [range.min, range.max]
+  return [range.min, range.max].map(v =>
+    typeof v === 'string' ? parseInt(v) : v
+  );
 }
 
-export { breakpoints as bp }
-export default mq
+export { breakpoints as bp };
+export default mq;

@@ -26,7 +26,6 @@ function Header() {
       `}
     >
       <Content
-        as="header"
         css={css`
           height: 10vh;
           display: flex;

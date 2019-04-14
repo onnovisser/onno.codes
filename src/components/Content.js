@@ -1,5 +1,7 @@
-import styled from '@emotion/styled'
-import { pagePadding } from '../style/utils'
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+import mq from '../style/mq';
+import { pagePadding } from '../style/utils';
 
 const Content = styled.div`
   width: 100%;
@@ -14,8 +16,13 @@ const Content = styled.div`
       max-width: ${theme.size.contentNarrow};
     `}
 
-  ${({ noPaddingMobile, theme }) => pagePadding(theme, noPaddingMobile)}
+  ${({ noPaddingMobile, noPadding, theme }) => !noPadding && pagePadding(theme, noPaddingMobile)}
+
+  ${({ narrow, theme }) => css`
+    ${mq({ min: narrow ? theme.size.contentNarrow : theme.size.contentWide })} {
+      padding: 0;
+    }
+  `};
 `;
 
-
-export default Content
+export default Content;

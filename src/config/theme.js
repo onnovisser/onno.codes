@@ -22,9 +22,8 @@ const color = {
 };
 
 const size = {
-  contentWide: '1400px',
-  halfContentWide: '700px',
-  contentNarrow: '700px',
+  contentWide: '1200px',
+  contentNarrow: '650px',
   pagePadding: '40px',
   pagePaddingMobile: '20px',
 };
