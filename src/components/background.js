@@ -1,14 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react';
 import { css } from '@emotion/core';
-import init from '../gl/scene';
+import React, { useEffect, useRef, useState } from 'react';
+import init from '../gl/init';
 
 function Background() {
   const [visible, setVisible] = useState(false);
   const ref = useRef();
 
   useEffect(() => {
-    init(ref.current).then(() => {
-      setVisible(true);
+    requestIdleCallback(() => {
+      init(ref.current).then(() => {
+        setVisible(true);
+      });
     });
   }, []);
 

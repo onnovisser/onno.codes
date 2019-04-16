@@ -1,42 +1,40 @@
 import glsl from 'glslify';
 import * as THREE from 'three';
 
-const ColorShader = {
-  shaderID: 'color',
+function createColorShader(canvasWidth, canvasHeight) {
+  return {
+    shaderID: 'color',
 
-  uniforms: {
-    tDiffuse: { type: 't', value: null },
-    uBrightness: { value: 1 },
-    uContrast: { value: 1 },
-    uColor: { value: new THREE.Vector3(1, 1, 1) },
-    uSaturation: { value: 1 },
-    uResolution: {
-      value: new THREE.Vector2(
-        window.innerWidth * window.devicePixelRatio,
-        window.innerHeight * window.devicePixelRatio
-      ),
+    uniforms: {
+      tDiffuse: { type: 't', value: null },
+      uBrightness: { value: 1 },
+      uContrast: { value: 1 },
+      uColor: { value: new THREE.Vector3(1, 1, 1) },
+      uSaturation: { value: 1 },
+      uResolution: {
+        value: new THREE.Vector2(canvasWidth, canvasHeight),
+      },
+
+      scale: { value: new THREE.Vector2(1, 1) },
+      offset: { value: new THREE.Vector2(-0.05, -0.15) },
+      coloredNoise: { value: true },
+
+      smoothing: { value: new THREE.Vector2(-0.5, 1) },
+      noiseAlpha: { value: 0.15 },
+
+      color1: { value: new THREE.Color(0xffffff) },
+      color2: { value: new THREE.Color(0x888888) },
     },
 
-    scale: { value: new THREE.Vector2(1, 1) },
-    offset: { value: new THREE.Vector2(-0.05, -0.15) },
-    coloredNoise: { value: true },
-
-    smoothing: { value: new THREE.Vector2(-0.5, 1) },
-    noiseAlpha: { value: 0.15 },
-
-    color1: { value: new THREE.Color(0xffffff) },
-    color2: { value: new THREE.Color(0x888888) },
-  },
-
-  vertexShader: `
+    vertexShader: `
     varying vec2 vUv;
 
     void main() {
       vUv = uv;
       gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
     }
-  `,
-  fragmentShader: glsl`
+    `,
+    fragmentShader: glsl`
     uniform sampler2D tDiffuse;
     uniform float uBrightness;
     uniform float uContrast;
@@ -79,16 +77,16 @@ const ColorShader = {
 
       float r = texture2D(tex_sampler, refr_r.xy + tex_coord).x * 0.5;
       float y = (texture2D(tex_sampler, refr_y.xy + tex_coord).x * 2.0 +
-                texture2D(tex_sampler, refr_y.xy + tex_coord).y * 2.0 -
-                texture2D(tex_sampler, refr_y.xy + tex_coord).z)/6.0;
+      texture2D(tex_sampler, refr_y.xy + tex_coord).y * 2.0 -
+      texture2D(tex_sampler, refr_y.xy + tex_coord).z)/6.0;
       float g = texture2D(tex_sampler, refr_g.xy + tex_coord).y * 0.5;
       float c = (texture2D(tex_sampler, refr_c.xy + tex_coord).y * 2.0 +
-                texture2D(tex_sampler, refr_c.xy + tex_coord).z * 2.0 -
-                texture2D(tex_sampler, refr_c.xy + tex_coord).x)/6.0;
+      texture2D(tex_sampler, refr_c.xy + tex_coord).z * 2.0 -
+      texture2D(tex_sampler, refr_c.xy + tex_coord).x)/6.0;
       float b = texture2D(tex_sampler, refr_b.xy + tex_coord).z * 0.5;
       float p = (texture2D(tex_sampler, refr_p.xy + tex_coord).z * 2.0 +
-                texture2D(tex_sampler, refr_p.xy + tex_coord).x * 2.0 -
-                texture2D(tex_sampler, refr_p.xy + tex_coord).y)/6.0;
+      texture2D(tex_sampler, refr_p.xy + tex_coord).x * 2.0 -
+      texture2D(tex_sampler, refr_p.xy + tex_coord).y)/6.0;
 
       float R = r + (2.0*p + 2.0*y - c)/3.0;
       float G = g + (2.0*y + 2.0*c - p)/3.0;
@@ -143,13 +141,14 @@ const ColorShader = {
       // color.rgb = mix(color2, color1, dist);
 
       // if (noiseAlpha > 0.0) {
-      //   vec3 noise = coloredNoise ? vec3(random(vUv * 1.5), random(vUv * 2.5), random(vUv)) : vec3(random(vUv));
-      //   color.rgb = mix(color.rgb, blend(color.rgb, noise), noiseAlpha);
-      // }
+        //   vec3 noise = coloredNoise ? vec3(random(vUv * 1.5), random(vUv * 2.5), random(vUv)) : vec3(random(vUv));
+        //   color.rgb = mix(color.rgb, blend(color.rgb, noise), noiseAlpha);
+        // }
 
-	    // gl_FragColor *= color;
-    }
-  `,
-};
+        // gl_FragColor *= color;
+      }
+      `,
+  };
+}
 
-export default ColorShader;
+export default createColorShader;

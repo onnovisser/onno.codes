@@ -1,28 +1,22 @@
 import * as THREE from 'three';
 import emitter from '../utils/emitter';
 import Renderer from './effects/renderer';
-import gui from './gui';
+// import gui from './gui';
 import OBJLoader from './lib/objLoader';
 import TerrainMaterial from './materials/terrain';
 import { addBarycentricCoordinates, unindexBufferGeometry } from './utils/geom';
+import loadCanvasTexture from './utils/loadCanvasTexture';
 
 let scene, camera, renderer, effectRenderer, controls, floor, background;
 
-async function init(canvas) {
-  initScene(canvas);
-  initGeometry();
-  renderer.setAnimationLoop(update);
-  setTimeout(() => renderer.setAnimationLoop(null), 2000);
-  window.addEventListener('resize', onResize);
-}
-
-function initScene(canvas) {
+async function init(canvas, windowWidth, windowHeight, pixelRatio) {
+  console.log('helloooo', canvas);
   scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0xfafafc, 0, 1000);
 
   camera = new THREE.PerspectiveCamera(
     40,
-    window.innerWidth / window.innerHeight,
+    windowWidth / windowHeight,
     0.1,
     5000
   );
@@ -39,9 +33,9 @@ function initScene(canvas) {
 
   renderer = new THREE.WebGLRenderer({
     alpha: true,
-    antialias: true,
+    // antialias: true,
     canvas,
-    pixelRatio: window.devicePixelRatio,
+    pixelRatio,
   });
 
   renderer.shadowMap.enabled = true;
@@ -52,17 +46,20 @@ function initScene(canvas) {
   gl.enable(gl.SAMPLE_ALPHA_TO_COVERAGE);
 
   const { x, y, z } = camera.position;
-  gui.addNew('x', x, x - 20, x + 6).onChange(v => (camera.position.x = v));
-  gui.addNew('y', y, y - 6, y + 6).onChange(v => (camera.position.y = v));
-  gui.addNew('z', z, z - 6, z + 6).onChange(v => (camera.position.z = v));
-  gui.addNew('Focal Length', 10, 9, 14).onChange(v => camera.setFocalLength(v));
+  // gui.addNew('x', x, x - 20, x + 6).onChange(v => (camera.position.x = v));
+  // gui.addNew('y', y, y - 6, y + 6).onChange(v => (camera.position.y = v));
+  // gui.addNew('z', z, z - 6, z + 6).onChange(v => (camera.position.z = v));
+  // gui.addNew('Focal Length', 10, 9, 14).onChange(v => camera.setFocalLength(v));
 
   // controls = new OrbitControls(camera, document);
   effectRenderer = new Renderer(renderer, scene, camera);
 
-  window.camera = camera;
+  resize(windowWidth, windowHeight, pixelRatio);
 
-  onResize();
+  initGeometry();
+  if (self.requestAnimationFrame) {
+    self.requestAnimationFrame(update);
+  }
 }
 
 function initGeometry() {
@@ -117,7 +114,6 @@ function initGeometry() {
   const loader = new OBJLoader();
   loader.load('/test.obj', obj => {
     console.log(obj);
-    scene.add(obj);
     const terrain = obj.children[0];
 
     terrain.castShadow = true;
@@ -125,23 +121,35 @@ function initGeometry() {
 
     unindexBufferGeometry(terrain.geometry);
     addBarycentricCoordinates(terrain.geometry, false);
-    terrain.material = new TerrainMaterial();
+    Promise.all([
+      loadCanvasTexture('/white.png'),
+      loadCanvasTexture('/tex.jpg'),
+    ]).then(([map, tex]) => {
+      terrain.material = new TerrainMaterial({ map }, { tex: { value: tex } });
+      scene.add(obj);
+    });
   });
 }
 
-function update(timestamp, asd, a) {
+function update(timestamp) {
   const time = timestamp / 1000;
   // controls.update();
   effectRenderer.render();
   emitter.emit('update', { time });
+  self.requestAnimationFrame(update);
 }
 
-function onResize() {
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  effectRenderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth / window.innerHeight;
+function resize(windowWidth, windowHeight, pixelRatio) {
+  const canvasWidth = windowWidth * pixelRatio;
+  const canvasHeight = windowHeight * pixelRatio;
+  renderer.setPixelRatio(pixelRatio);
+  renderer.setSize(windowWidth, windowHeight, false);
+  effectRenderer.setSize(canvasWidth, canvasHeight);
+  camera.aspect = windowWidth / windowHeight;
   camera.updateProjectionMatrix();
 }
 
-export default init;
+export default {
+  init,
+  resize,
+};

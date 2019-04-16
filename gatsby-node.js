@@ -129,3 +129,21 @@ exports.createPages = async ({ graphql, actions }) => {
 
   console.log(error);
 };
+
+exports.onCreateWebpackConfig = ({ actions, getConfig, ...rest }) => {
+  const config = getConfig();
+  // Workaround for issue with worker-loader and HMR
+  // See: https://github.com/webpack/webpack/issues/6642
+  config.output.globalObject = 'this';
+
+  actions.setWebpackConfig({
+    module: {
+      rules: [
+        {
+          test: /\.worker\.js$/,
+          use: [`worker-loader`],
+        },
+      ],
+    },
+  });
+};

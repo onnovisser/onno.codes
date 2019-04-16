@@ -38,9 +38,9 @@ function Header() {
         `}
       >
         <nav css={css``}>
+          <TextLink to="/">Home</TextLink>
           <TextLink to="/work">Work</TextLink>
           <TextLink to="/about">About</TextLink>
-
           <TextLink to="/lab">Lab</TextLink>
         </nav>
         <nav>
