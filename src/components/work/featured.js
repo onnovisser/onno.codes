@@ -10,13 +10,13 @@ import Heading from '../heading';
 import ArrowRightIcon from '../icon/arrowRight';
 import ExternalIcon from '../icon/external';
 import LinedBlock from '../linedBlock';
-import SplitColumns from '../splitColumns';
+import LinedColumns, { Column } from '../linedColumns';
 
 const button = ({ color }) => css`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 15px;
   color: ${color.neutralDark};
 
   svg {
@@ -26,7 +26,7 @@ const button = ({ color }) => css`
 
 function FeaturedWork() {
   const data = useStaticQuery(query);
-  const posts = get(data, 'allMdx.edges');
+  const work = get(data, 'allMdx.edges');
 
   return (
     <>
@@ -38,49 +38,43 @@ function FeaturedWork() {
         `}
       >
         <Content>
-          <Heading>Featured Work</Heading>
+          <Heading>Work</Heading>
         </Content>
       </LinedBlock>
-      {posts.map(({ node }, i) => {
+      {work.map(({ node }, i) => {
         const title = get(node, 'frontmatter.title') || node.fields.slug;
         const shortTitle = get(node, 'frontmatter.shortTitle') || title;
         const themeColor = get(node, 'frontmatter.themeColor') || '#0f0';
+        const image = get(node, 'fields.featuredImage.childImageSharp.fluid');
 
         return (
           <Fragment key={node.fields.slug}>
             <Content noPaddingMobile borderRight={i % 2 === 0} borderLeft>
-              <SplitColumns
-                flipped={i % 2}
-                left={
-                  <div
+              <LinedColumns flipped={i % 2}>
+                <Column>
+                  <Heading
                     css={css`
-                      height: 100%;
+                      position: sticky;
+                      top: 10vh;
+                      bottom: 0;
+                      color: ${themeColor};
+                      font-size: 5rem;
+                      font-weight: 700;
+                      opacity: 0.8;
+                      line-height: 1;
+                      transform: translateY(0.25em);
+
+                      ${mq.mediumUp} {
+                        transform: none;
+                        line-height: 0.5;
+                        writing-mode: tb-rl;
+                      }
                     `}
                   >
-                    <Heading
-                      css={css`
-                        position: sticky;
-                        top: 10vh;
-                        bottom: 0;
-                        color: ${themeColor};
-                        font-size: 5rem;
-                        font-weight: 700;
-                        opacity: 0.8;
-                        line-height: 1;
-                        transform: translateY(0.25em);
-
-                        ${mq.mediumUp} {
-                          transform: none;
-                          line-height: 0.5;
-                          writing-mode: tb-rl;
-                        }
-                      `}
-                    >
-                      {shortTitle}
-                    </Heading>
-                  </div>
-                }
-                right={
+                    {shortTitle}
+                  </Heading>
+                </Column>
+                <Column>
                   <LinedBlock
                     css={css`
                       min-height: 80vh;
@@ -88,11 +82,7 @@ function FeaturedWork() {
                       flex-direction: column;
                     `}
                   >
-                    {node.fields.featuredImage && (
-                      <Image
-                        fluid={node.fields.featuredImage.childImageSharp.fluid}
-                      />
-                    )}
+                    {image && <Image fluid={image} />}
                     <Content
                       css={theme => css`
                         ${paddingY(theme)};
@@ -105,8 +95,12 @@ function FeaturedWork() {
                       <Heading as="h3">{title}</Heading>
                       <p>{node.frontmatter.description}</p>
                     </Content>
-                    <SplitColumns
-                      left={
+                    <LinedColumns
+                      css={css`
+                        margin-top: auto;
+                      `}
+                    >
+                      <Column>
                         <LinedBlock
                           as={Link}
                           to={node.fields.slug}
@@ -114,8 +108,8 @@ function FeaturedWork() {
                         >
                           Read more <ArrowRightIcon />
                         </LinedBlock>
-                      }
-                      right={
+                      </Column>
+                      <Column>
                         <LinedBlock
                           as="a"
                           href={node.frontmatter.url}
@@ -125,16 +119,13 @@ function FeaturedWork() {
                         >
                           Visit <ExternalIcon />
                         </LinedBlock>
-                      }
-                      css={css`
-                        margin-top: auto;
-                      `}
-                    />
+                      </Column>
+                    </LinedColumns>
                   </LinedBlock>
-                }
-              />
+                </Column>
+              </LinedColumns>
             </Content>
-            {i < posts.length - 1 ? (
+            {i < work.length - 1 ? (
               <div
                 css={css`
                   height: 10vh;
@@ -144,10 +135,16 @@ function FeaturedWork() {
               <LinedBlock
                 css={css`
                   height: 10vh;
+                  display: flex;
+                  align-items: center;
                 `}
               >
                 <Content>
-                  <Link to="/work">More work</Link>
+                  <Link to="/work">
+                    <Heading as="h3">
+                      More work <ArrowRightIcon />
+                    </Heading>
+                  </Link>
                 </Content>
               </LinedBlock>
             )}
@@ -161,7 +158,7 @@ function FeaturedWork() {
 const query = graphql`
   {
     allMdx(
-      limit: 40
+      limit: 4
       sort: { fields: [frontmatter___date], order: DESC }
       filter: {
         # fields: { type: { eq: "work" } }
@@ -194,8 +191,8 @@ const query = graphql`
             themeColor
             description
           }
-          excerpt(pruneLength: 200)
-          timeToRead
+          # excerpt(pruneLength: 200)
+          # timeToRead
         }
       }
     }

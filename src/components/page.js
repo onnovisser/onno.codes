@@ -23,9 +23,7 @@ function Page({ children, customSEO }) {
         css={css`
           text-align: center;
           padding: 3rem 1rem;
-          span {
-            font-size: 0.75rem;
-          }
+          font-size: 0.75rem;
         `}
       >
         {/* &copy; 2019 by Onno Visser */}

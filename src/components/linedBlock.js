@@ -1,6 +1,3 @@
-import React, { useState, useEffect } from 'react';
-import { string, func, boolean } from 'prop-types';
-import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
 const LinedBlock = styled.div`
