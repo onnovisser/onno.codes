@@ -5,7 +5,7 @@ import mq from '../style/mq';
 
 const Column = styled.div`
   width: 100%;
-  flex-grow: 1;
+  flex: auto;
   position: relative;
 
   &::before {

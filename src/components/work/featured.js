@@ -113,7 +113,7 @@ function FeaturedWork() {
                         <LinedBlock
                           as="a"
                           href={node.frontmatter.url}
-                          target="blank"
+                          target="_blank"
                           rel="noopener noreferrer"
                           css={button}
                         >

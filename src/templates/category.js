@@ -28,26 +28,24 @@ const Category = ({ pageContext: { category }, data: { allMdx } }) => {
   } tagged with "${category}"`;
 
   return (
-    <Layout>
-      <Wrapper>
-        <Helmet title={`Category: ${category} | ${config.siteTitle}`} />
-        <Header>
-          <Link to="/">{config.siteTitle}</Link>
-        </Header>
-        {subline} (See <Link to="/categories">all categories</Link>)
-        {edges.map(post => (
-          <Article
-            title={post.node.frontmatter.title}
-            date={post.node.frontmatter.date}
-            excerpt={post.node.excerpt}
-            timeToRead={post.node.timeToRead}
-            slug={post.node.fields.slug}
-            categories={post.node.frontmatter.categories}
-            key={post.node.fields.slug}
-          />
-        ))}
-      </Wrapper>
-    </Layout>
+    <>
+      <Helmet title={`Category: ${category} | ${config.siteTitle}`} />
+
+        <Link to="/">{config.siteTitle}</Link>
+
+      {subline} (See <Link to="/categories">all categories</Link>)
+      {/* {edges.map(post => (
+        <Article
+          title={post.node.frontmatter.title}
+          date={post.node.frontmatter.date}
+          excerpt={post.node.excerpt}
+          timeToRead={post.node.timeToRead}
+          slug={post.node.fields.slug}
+          categories={post.node.frontmatter.categories}
+          key={post.node.fields.slug}
+        />
+      ))} */}
+    </>
   );
 };
 

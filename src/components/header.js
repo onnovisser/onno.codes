@@ -3,9 +3,10 @@ import styled from '@emotion/styled';
 import { Link } from 'gatsby';
 import React from 'react';
 import Content from './content';
+import CodepenIcon from './icon/codepen';
 import EmailIcon from './icon/email';
-import TwitterIcon from './icon/twitter';
 import GithubIcon from './icon/github';
+import TwitterIcon from './icon/twitter';
 
 const TextLink = styled(Link)`
   color: ${props => props.theme.color.neutralDark};
@@ -37,7 +38,7 @@ function Header() {
           align-items: center;
         `}
       >
-        <nav css={css``}>
+        <nav>
           <TextLink to="/">Home</TextLink>
           <TextLink to="/work">Work</TextLink>
           <TextLink to="/about">About</TextLink>
@@ -46,7 +47,8 @@ function Header() {
         <nav>
           <IconLink
             href="mailto:visser.onno@gmail.com"
-            aria-label="Email Onno Visser"
+            aria-label="Send an Email"
+            title="Send an Email"
           >
             <EmailIcon />
           </IconLink>
@@ -54,7 +56,8 @@ function Header() {
             href="https://twitter.com/_onnovisser"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Onno Visser on Twitter"
+            aria-label="Twitter"
+            title="Twitter"
           >
             <TwitterIcon />
           </IconLink>
@@ -62,9 +65,19 @@ function Header() {
             href="https://github.com/onnovisser"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Onno Visser on Github"
+            aria-label="Github"
+            title="Github"
           >
             <GithubIcon />
+          </IconLink>
+          <IconLink
+            href="https://codepen.io/Penno/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Codepen"
+            title="Codepen"
+          >
+            <CodepenIcon />
           </IconLink>
         </nav>
       </Content>
