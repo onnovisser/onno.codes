@@ -28,7 +28,6 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     }
     createNodeField({ node, name: 'slug', value: slug });
 
-    const { frontmatter } = node;
     const parent = getNode(node.parent);
     if (parent.internal.type === 'File') {
       const ext = path.extname(parent.absolutePath);

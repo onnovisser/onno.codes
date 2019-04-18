@@ -1,4 +1,3 @@
-import * as THREE from 'three';
 import Pass from './pass';
 /**
  * @author alteredq / http://alteredqualia.com/

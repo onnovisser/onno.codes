@@ -7,7 +7,7 @@ import TerrainMaterial from './materials/terrain';
 import { addBarycentricCoordinates, unindexBufferGeometry } from './utils/geom';
 import loadCanvasTexture from './utils/loadCanvasTexture';
 
-let scene, camera, renderer, effectRenderer, controls, floor, background;
+let scene, camera, renderer, effectRenderer, controls, floor, background, rafId;
 
 async function init(canvas, windowWidth, windowHeight, pixelRatio) {
   console.log('helloooo', canvas);
@@ -58,7 +58,7 @@ async function init(canvas, windowWidth, windowHeight, pixelRatio) {
 
   initGeometry();
   if (self.requestAnimationFrame) {
-    self.requestAnimationFrame(update);
+    rafId = self.requestAnimationFrame(update);
   }
 }
 
@@ -136,7 +136,7 @@ function update(timestamp) {
   // controls.update();
   effectRenderer.render();
   emitter.emit('update', { time });
-  self.requestAnimationFrame(update);
+  rafId = self.requestAnimationFrame(update);
 }
 
 function resize(windowWidth, windowHeight, pixelRatio) {

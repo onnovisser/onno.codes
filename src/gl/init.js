@@ -3,7 +3,7 @@ import SceneWorker from './scene.worker';
 
 async function init(canvas) {
   let scene, target;
-  if ('transferControlToOffscreen' in canvas) {
+  if ('transferControlToOffscreen' in canvas && false) {
     target = canvas.transferControlToOffscreen();
     const worker = new SceneWorker();
     scene = Comlink.proxy(worker);

@@ -75,7 +75,7 @@ function computeCentroid(geometry, face, v) {
   let b = geometry.vertices[face.b];
   let c = geometry.vertices[face.c];
 
-  v = v || new Vector3();
+  v = v || new THREE.Vector3();
 
   v.x = (a.x + b.x + c.x) / 3;
   v.y = (a.y + b.y + c.y) / 3;
@@ -88,7 +88,7 @@ function createAttribute(geometry, name, itemSize, factory, perFace) {
   const mult = perFace ? 3 : 1; // Assuming a geometry with only triangles
   const { count } = geometry.attributes.position;
   const buffer = new Float32Array(count * itemSize);
-  const attribute = new BufferAttribute(buffer, itemSize);
+  const attribute = new THREE.BufferAttribute(buffer, itemSize);
 
   geometry.addAttribute(name, attribute);
 
