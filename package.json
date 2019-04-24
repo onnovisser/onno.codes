@@ -12,9 +12,9 @@
     "lint": "eslint . --ext .js --ignore-path .gitignore",
     "lint:fix": "eslint . --ext .js --fix --ignore-path .gitignore",
     "lint:ci": "yarn lint --format junit -o results/eslint/result.xml",
-    "tex:etc1": "texture-compressor -i ./static/tex.jpg -o ./static/tex-etc1.ktx -t etc -c etc1",
-    "tex:s3tc": "texture-compressor -i ./static/tex.jpg -o ./static/tex-dxt1.ktx -t s3tc -c dxt1",
-    "tex:pvrtc": "texture-compressor -i ./static/tex.jpg -o ./static/tex-pvrtc2BPP.ktx -t pvr -c pvrtc1",
+    "tex:etc1": "texture-compressor -i ./static/tex.jpg -o ./static/tex-etc1.ktx -t etc -c etc1 -y",
+    "tex:s3tc": "texture-compressor -i ./static/tex.jpg -o ./static/tex-dxt1.ktx -t s3tc -c dxt1 -y",
+    "tex:pvrtc": "texture-compressor -i ./static/tex.jpg -o ./static/tex-pvrtc2BPP.ktx -t pvr -c pvrtc1 -y",
     "format": "prettier \"**/*.{js,md,mdx} \" --write"
   },
   "glslify": {

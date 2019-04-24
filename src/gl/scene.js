@@ -4,13 +4,21 @@ import Renderer from './effects/renderer';
 // import gui from './gui';
 import OBJLoader from './lib/objLoader';
 import TerrainMaterial from './materials/terrain';
+import createCompressedTextureLoader from './utils/createCompressedTextureLoader';
 import { addBarycentricCoordinates, unindexBufferGeometry } from './utils/geom';
 import loadCanvasTexture from './utils/loadCanvasTexture';
 
-let scene, camera, renderer, effectRenderer, controls, floor, background, rafId;
+let scene,
+  camera,
+  renderer,
+  effectRenderer,
+  controls,
+  floor,
+  background,
+  rafId,
+  texLoader;
 
 async function init(canvas, windowWidth, windowHeight, pixelRatio) {
-  console.log('helloooo', canvas);
   scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0xfafafc, 0, 1000);
 
@@ -44,6 +52,8 @@ async function init(canvas, windowWidth, windowHeight, pixelRatio) {
   renderer.setClearColor(0xfafafc);
   const gl = renderer.getContext();
   gl.enable(gl.SAMPLE_ALPHA_TO_COVERAGE);
+
+  texLoader = createCompressedTextureLoader(renderer);
 
   const { x, y, z } = camera.position;
   // gui.addNew('x', x, x - 20, x + 6).onChange(v => (camera.position.x = v));
@@ -123,8 +133,8 @@ function initGeometry() {
     addBarycentricCoordinates(terrain.geometry, false);
     Promise.all([
       loadCanvasTexture('/white.png'),
-      loadCanvasTexture('/tex.jpg'),
-    ]).then(([map, tex]) => {
+    ]).then(([map]) => {
+      const tex = texLoader('/tex');
       terrain.material = new TerrainMaterial({ map }, { tex: { value: tex } });
       scene.add(obj);
     });

@@ -1,8 +1,6 @@
 import glsl from 'glslify';
 import * as THREE from 'three';
 import emitter from '../../utils/emitter';
-// import gui from '../gui';
-import loadTexture from '../utils/loadTexture';
 
 class TerrainMaterial extends THREE.MeshPhongMaterial {
   static shader = {
@@ -132,11 +130,10 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
         // diffuseColor *= col;
 
 
-
-
         float influence = noise(vec4(vPosition * .005, 0.));
         vec4 wireframe = getStyledWireframe(vBarycentric, thickness);
-        float mask = getStyledWireframe(vBarycentric, clamp(influence * 4. - 4. + (terrainProgress) * 8., -1.5, 1.)).a;
+        // float mask = getStyledWireframe(vBarycentric, clamp(influence * 4. - 4. + terrainProgress * 8., -1.5, 1.)).a;
+        float mask = getStyledWireframe(vBarycentric, clamp(influence * 4. - 4. + (terrainProgress + sin(time)) * 8., -1.5, 1.)).a;
 
         // gl_FragColor.rgb = mix(wireframe.rgb, diffuseColor.rgb, 1. - mask); // smoothstep(.4, .401, influence)
         gl_FragColor.rgb = mix(wireframe.rgb *  (gl_FragColor.rgb / 4. + .75), col.rgb, 1. - mask); // smoothstep(.4, .401, influence)
@@ -169,7 +166,11 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
   onBeforeCompile = shader => {
     console.log(shader);
     this.uniforms = shader.uniforms;
-    Object.assign(this.uniforms, TerrainMaterial.shader.uniforms, this.addedUniforms);
+    Object.assign(
+      this.uniforms,
+      TerrainMaterial.shader.uniforms,
+      this.addedUniforms
+    );
 
     shader.vertexShader = `
         ${TerrainMaterial.shader.vertexParameters}
