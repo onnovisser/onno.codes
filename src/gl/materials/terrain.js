@@ -1,6 +1,11 @@
 import glsl from 'glslify';
 import * as THREE from 'three';
-import emitter from '../../utils/emitter';
+import { lerp } from '../utils/math';
+
+const terrainStates = {
+  WIREFRAME: 1,
+  TEXTURE: 2,
+};
 
 class TerrainMaterial extends THREE.MeshPhongMaterial {
   static shader = {
@@ -132,8 +137,8 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
 
         float influence = noise(vec4(vPosition * .005, 0.));
         vec4 wireframe = getStyledWireframe(vBarycentric, thickness);
-        // float mask = getStyledWireframe(vBarycentric, clamp(influence * 4. - 4. + terrainProgress * 8., -1.5, 1.)).a;
-        float mask = getStyledWireframe(vBarycentric, clamp(influence * 4. - 4. + (terrainProgress + sin(time)) * 8., -1.5, 1.)).a;
+        float mask = getStyledWireframe(vBarycentric, clamp(influence * 4. - 4. + terrainProgress * 8., -1.5, 1.)).a;
+        // float mask = getStyledWireframe(vBarycentric, clamp(influence * 4. - 4. + (terrainProgress + sin(time)) * 8., -1.5, 1.)).a;
 
         // gl_FragColor.rgb = mix(wireframe.rgb, diffuseColor.rgb, 1. - mask); // smoothstep(.4, .401, influence)
         gl_FragColor.rgb = mix(wireframe.rgb *  (gl_FragColor.rgb / 4. + .75), col.rgb, 1. - mask); // smoothstep(.4, .401, influence)
@@ -152,12 +157,15 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
       `,
   };
 
-  constructor(props, uniforms) {
+  terrainState = terrainStates.WIREFRAME;
+
+  constructor(props, uniforms, app) {
     super({
       ...props,
       // map: loadTexture('/white.png'),
       color: new THREE.Color(0xfafafc),
     });
+    this.app = app;
     this.addedUniforms = uniforms;
     this.extensions = {
       derivatives: true,
@@ -207,21 +215,39 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     //   mesh.customDistanceMaterial = customMaterial
     // }
 
-    emitter.on('update', this.update);
+    this.app.on('update', this.update);
+    this.app.on('changeTerrainState', this.setState);
 
     // gui
     //   .addNew('terrain', 0.99, 0, 1)
     //   .onChange(v => (this.uniforms.terrainProgress.value = v));
   };
 
-  update = ({ time }) => {
+  update = ({ time, delta }) => {
     this.uniforms.time.value = time;
+    const terrainProgressTarget =
+      this.terrainState === terrainStates.WIREFRAME ? 1 : 0;
+    // console.log(
+    //   terrainProgressTarget,
+    //   this.uniforms.terrainProgress.value,
+    //   delta
+    // );
+    this.uniforms.terrainProgress.value = lerp(
+      this.uniforms.terrainProgress.value,
+      terrainProgressTarget,
+      delta
+    );
+  };
+
+  setState = state => {
+    console.log('changeTerrainState', state);
+    this.terrainState = state;
   };
 
   dispose() {
     super.dispose();
 
-    emitter.off('update', this.update);
+    this.app.off('update', this.update);
   }
 }
 

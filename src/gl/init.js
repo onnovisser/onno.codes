@@ -1,23 +1,29 @@
 import * as Comlink from 'comlinkjs';
+import emitter from '../utils/emitter';
 import SceneWorker from './scene.worker';
 
 async function init(canvas) {
-  let scene, target;
+  let Scene, target;
   if ('transferControlToOffscreen' in canvas && false) {
     target = canvas.transferControlToOffscreen();
     const worker = new SceneWorker();
-    scene = Comlink.proxy(worker);
+    Scene = Comlink.proxy(worker);
   } else {
     target = canvas;
-    scene = await import('./scene').then(m => (m && m.default) || m);
+    Scene = await import('./scene').then(m => (m && m.default) || m);
   }
 
+  const scene = await new Scene();
   await scene.init(
     target,
     window.innerWidth,
     window.innerHeight,
     window.devicePixelRatio
   );
+
+  emitter.on('changeTerrainState', e => {
+    scene.emit('changeTerrainState', e);
+  });
 
   window.addEventListener('resize', () => {
     scene.resize(

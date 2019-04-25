@@ -1,5 +1,5 @@
+import mitt from 'mitt';
 import * as THREE from 'three';
-import emitter from '../utils/emitter';
 import Renderer from './effects/renderer';
 // import gui from './gui';
 import OBJLoader from './lib/objLoader';
@@ -7,159 +7,148 @@ import TerrainMaterial from './materials/terrain';
 import createCompressedTextureLoader from './utils/createCompressedTextureLoader';
 import { addBarycentricCoordinates, unindexBufferGeometry } from './utils/geom';
 import loadCanvasTexture from './utils/loadCanvasTexture';
+import Ticker from './utils/ticker';
 
-let scene,
-  camera,
-  renderer,
-  effectRenderer,
-  controls,
-  floor,
-  background,
-  rafId,
-  texLoader;
+class App {
+  ticker = new Ticker();
+  async init(canvas, windowWidth, windowHeight, pixelRatio) {
+    Object.assign(this, mitt());
+    this.scene = new THREE.Scene();
+    this.scene.fog = new THREE.Fog(0xfafafc, 0, 1000);
 
-async function init(canvas, windowWidth, windowHeight, pixelRatio) {
-  scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xfafafc, 0, 1000);
+    this.camera = new THREE.PerspectiveCamera(
+      40,
+      windowWidth / windowHeight,
+      0.1,
+      5000
+    );
+    this.camera.setFocalLength(10);
+    this.camera.position.set(391.292, 117.129, 61.784);
+    // camera.position.set(10, 1, 0)
+    // camera.rotation.set(-20.333 * (Math.PI / 180), 80.368 * (Math.PI / 180), -10.675 * (Math.PI / 180))
+    this.camera.rotation.set(
+      -0.333 * (Math.PI / 180),
+      80.368 * (Math.PI / 180),
+      -0.675 * (Math.PI / 180)
+    );
+    this.scene.add(this.camera);
 
-  camera = new THREE.PerspectiveCamera(
-    40,
-    windowWidth / windowHeight,
-    0.1,
-    5000
-  );
-  camera.setFocalLength(10);
-  camera.position.set(391.292, 117.129, 61.784);
-  // camera.position.set(10, 1, 0)
-  // camera.rotation.set(-20.333 * (Math.PI / 180), 80.368 * (Math.PI / 180), -10.675 * (Math.PI / 180))
-  camera.rotation.set(
-    -0.333 * (Math.PI / 180),
-    80.368 * (Math.PI / 180),
-    -0.675 * (Math.PI / 180)
-  );
-  scene.add(camera);
-
-  renderer = new THREE.WebGLRenderer({
-    alpha: true,
-    // antialias: true,
-    canvas,
-    pixelRatio,
-  });
-
-  renderer.shadowMap.enabled = true;
-  // renderer.shadowMap.type = THREE.PCFShadowMap;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.setClearColor(0xfafafc);
-  const gl = renderer.getContext();
-  gl.enable(gl.SAMPLE_ALPHA_TO_COVERAGE);
-
-  texLoader = createCompressedTextureLoader(renderer);
-
-  const { x, y, z } = camera.position;
-  // gui.addNew('x', x, x - 20, x + 6).onChange(v => (camera.position.x = v));
-  // gui.addNew('y', y, y - 6, y + 6).onChange(v => (camera.position.y = v));
-  // gui.addNew('z', z, z - 6, z + 6).onChange(v => (camera.position.z = v));
-  // gui.addNew('Focal Length', 10, 9, 14).onChange(v => camera.setFocalLength(v));
-
-  // controls = new OrbitControls(camera, document);
-  effectRenderer = new Renderer(renderer, scene, camera);
-
-  resize(windowWidth, windowHeight, pixelRatio);
-
-  initGeometry();
-  if (self.requestAnimationFrame) {
-    rafId = self.requestAnimationFrame(update);
-  }
-}
-
-function initGeometry() {
-  const floorGeometry = new THREE.PlaneGeometry(100, 100, 50, 50);
-  const floorMaterial = new THREE.MeshLambertMaterial({ wireframe: false });
-  floor = new THREE.Mesh(floorGeometry, floorMaterial);
-  floor.position.y = -5;
-  floor.rotateX(-0.5 * Math.PI);
-  floor.receiveShadow = true;
-  scene.add(floor);
-
-  const backgroundGeometry = new THREE.SphereGeometry(1000, 10, 10);
-  const backgroundMaterial = new THREE.MeshLambertMaterial({
-    color: 0xff0000,
-    side: THREE.BackSide,
-  });
-  background = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
-  // scene.add(background);
-
-  const ballGeometry = new THREE.SphereGeometry(2, 10, 10);
-  const ballMaterial = new THREE.MeshLambertMaterial({
-    color: 0xff0000,
-  });
-  const ball = new THREE.Mesh(ballGeometry, ballMaterial);
-  ball.castShadow = true;
-  ball.receiveShadow = false;
-  // scene.add(ball);
-  ball.position.set(330, 120, 60);
-  // ball.position.set(0, 5, 0)
-
-  const light = new THREE.DirectionalLight(0xffffff, 1);
-  const helper = new THREE.DirectionalLightHelper(light, 200);
-  // scene.add(helper);
-  light.position.set(1, 8, 4);
-  light.castShadow = true;
-  light.shadow.bias = 0.0001;
-  light.shadow.mapSize.width = 1024;
-  light.shadow.mapSize.height = 1024;
-  light.shadow.camera.position.set(291.292, 130, 61.784);
-  light.shadow.camera.near = -300;
-  light.shadow.camera.far = 100;
-  light.shadow.camera.right = 350;
-  light.shadow.camera.left = 50;
-  light.shadow.camera.top = 50;
-  light.shadow.camera.bottom = -250;
-  scene.add(light);
-
-  console.log(light.shadow.camera);
-  // scene.add(new THREE.CameraHelper(light.shadow.camera));
-  // light.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 1200, 2500 ) );
-
-  const loader = new OBJLoader();
-  loader.load('/test.obj', obj => {
-    console.log(obj);
-    const terrain = obj.children[0];
-
-    terrain.castShadow = true;
-    terrain.receiveShadow = true;
-
-    unindexBufferGeometry(terrain.geometry);
-    addBarycentricCoordinates(terrain.geometry, false);
-    Promise.all([
-      loadCanvasTexture('/white.png'),
-    ]).then(([map]) => {
-      const tex = texLoader('/tex');
-      terrain.material = new TerrainMaterial({ map }, { tex: { value: tex } });
-      scene.add(obj);
+    this.renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      // antialias: true,
+      canvas,
+      pixelRatio,
     });
-  });
+
+    this.renderer.shadowMap.enabled = true;
+    // this.renderer.shadowMap.type = THREE.PCFShadowMap;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.setClearColor(0xfafafc);
+    const gl = this.renderer.getContext();
+    gl.enable(gl.SAMPLE_ALPHA_TO_COVERAGE);
+
+    const { x, y, z } = this.camera.position;
+    // gui.addNew('x', x, x - 20, x + 6).onChange(v => (this.camera.position.x = v));
+    // gui.addNew('y', y, y - 6, y + 6).onChange(v => (this.camera.position.y = v));
+    // gui.addNew('z', z, z - 6, z + 6).onChange(v => (this.camera.position.z = v));
+    // gui.addNew('Focal Length', 10, 9, 14).onChange(v => this.camera.setFocalLength(v));
+
+    // controls = new OrbitControls(this.camera, document);
+    this.effectRenderer = new Renderer(this.renderer, this.scene, this.camera);
+    this.texLoader = createCompressedTextureLoader(this.renderer);
+
+    this.resize(windowWidth, windowHeight, pixelRatio);
+
+    this.initGeometry();
+    this.ticker.on('tick', this.update);
+    this.ticker.start();
+  }
+
+  initGeometry() {
+    const floorGeometry = new THREE.PlaneGeometry(100, 100, 50, 50);
+    const floorMaterial = new THREE.MeshLambertMaterial({ wireframe: false });
+    this.floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    this.floor.position.y = -5;
+    this.floor.rotateX(-0.5 * Math.PI);
+    this.floor.receiveShadow = true;
+    this.scene.add(this.floor);
+
+    const backgroundGeometry = new THREE.SphereGeometry(1000, 10, 10);
+    const backgroundMaterial = new THREE.MeshLambertMaterial({
+      color: 0xff0000,
+      side: THREE.BackSide,
+    });
+    this.background = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
+    // scene.add(background);
+
+    const ballGeometry = new THREE.SphereGeometry(2, 10, 10);
+    const ballMaterial = new THREE.MeshLambertMaterial({
+      color: 0xff0000,
+    });
+    const ball = new THREE.Mesh(ballGeometry, ballMaterial);
+    ball.castShadow = true;
+    ball.receiveShadow = false;
+    // scene.add(ball);
+    ball.position.set(330, 120, 60);
+    // ball.position.set(0, 5, 0)
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    const helper = new THREE.DirectionalLightHelper(light, 200);
+    // scene.add(helper);
+    light.position.set(1, 8, 4);
+    light.castShadow = true;
+    light.shadow.bias = 0.0001;
+    light.shadow.mapSize.width = 1024;
+    light.shadow.mapSize.height = 1024;
+    light.shadow.camera.position.set(291.292, 130, 61.784);
+    light.shadow.camera.near = -300;
+    light.shadow.camera.far = 100;
+    light.shadow.camera.right = 350;
+    light.shadow.camera.left = 50;
+    light.shadow.camera.top = 50;
+    light.shadow.camera.bottom = -250;
+    this.scene.add(light);
+
+    console.log(light.shadow.camera);
+    // scene.add(new THREE.CameraHelper(light.shadow.camera));
+    // light.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 1200, 2500 ) );
+
+    const loader = new OBJLoader();
+    loader.load('/test.obj', obj => {
+      console.log(obj);
+      const terrain = obj.children[0];
+
+      terrain.castShadow = true;
+      terrain.receiveShadow = true;
+
+      unindexBufferGeometry(terrain.geometry);
+      addBarycentricCoordinates(terrain.geometry, false);
+      Promise.all([loadCanvasTexture('/white.png')]).then(([map]) => {
+        const tex = this.texLoader('/tex');
+        terrain.material = new TerrainMaterial(
+          { map },
+          { tex: { value: tex } },
+          this
+        );
+        this.scene.add(obj);
+      });
+    });
+  }
+  update = e => {
+    // controls.update();
+    this.effectRenderer.render();
+    this.emit('update', e);
+  };
+
+  resize = (windowWidth, windowHeight, pixelRatio) => {
+    const canvasWidth = windowWidth * pixelRatio;
+    const canvasHeight = windowHeight * pixelRatio;
+    this.renderer.setPixelRatio(pixelRatio);
+    this.renderer.setSize(windowWidth, windowHeight, false);
+    this.effectRenderer.setSize(canvasWidth, canvasHeight);
+    this.camera.aspect = windowWidth / windowHeight;
+    this.camera.updateProjectionMatrix();
+  };
 }
 
-function update(timestamp) {
-  const time = timestamp / 1000;
-  // controls.update();
-  effectRenderer.render();
-  emitter.emit('update', { time });
-  rafId = self.requestAnimationFrame(update);
-}
-
-function resize(windowWidth, windowHeight, pixelRatio) {
-  const canvasWidth = windowWidth * pixelRatio;
-  const canvasHeight = windowHeight * pixelRatio;
-  renderer.setPixelRatio(pixelRatio);
-  renderer.setSize(windowWidth, windowHeight, false);
-  effectRenderer.setSize(canvasWidth, canvasHeight);
-  camera.aspect = windowWidth / windowHeight;
-  camera.updateProjectionMatrix();
-}
-
-export default {
-  init,
-  resize,
-};
+export default App;
