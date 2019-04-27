@@ -1,5 +1,6 @@
 import mitt from 'mitt';
 import * as THREE from 'three';
+import { createReplayEmitter } from '../utils/emitter';
 import Renderer from './effects/renderer';
 // import gui from './gui';
 import OBJLoader from './lib/objLoader';
@@ -11,8 +12,9 @@ import Ticker from './utils/ticker';
 
 class App {
   ticker = new Ticker();
+  emitter = mitt();
+  replayEmitter = createReplayEmitter();
   async init(canvas, windowWidth, windowHeight, pixelRatio) {
-    Object.assign(this, mitt());
     this.scene = new THREE.Scene();
     this.scene.fog = new THREE.Fog(0xfafafc, 0, 1000);
 
@@ -137,7 +139,7 @@ class App {
   update = e => {
     // controls.update();
     this.effectRenderer.render();
-    this.emit('update', e);
+    this.emitter.emit('update', e);
   };
 
   resize = (windowWidth, windowHeight, pixelRatio) => {

@@ -1,5 +1,5 @@
 import * as Comlink from 'comlinkjs';
-import emitter from '../utils/emitter';
+import { replayEmitter } from '../utils/emitter';
 import SceneWorker from './scene.worker';
 
 async function init(canvas) {
@@ -21,8 +21,8 @@ async function init(canvas) {
     window.devicePixelRatio
   );
 
-  emitter.on('changeTerrainState', e => {
-    scene.emit('changeTerrainState', e);
+  replayEmitter.on('changeTerrainState', evt => {
+    scene.replayEmitter.emit('changeTerrainState', evt);
   });
 
   window.addEventListener('resize', () => {

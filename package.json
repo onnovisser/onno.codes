@@ -66,6 +66,7 @@
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.0",
     "react-live": "^1.12.0",
+    "rxjs": "^6.5.1",
     "three": "~0.100.0",
     "typeface-bitter": "^0.0.71",
     "typeface-lekton": "^0.0.72",
