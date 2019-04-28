@@ -8,11 +8,12 @@ const base = theme => css`
     padding: 0;
     width: 100%;
     height: 100%;
+    overflow-x: hidden;
   }
 
   body {
-    padding-top: 10vh;
     background: ${theme.color.neutralLightest};
+    background: #f0f0f0;
   }
 
   ::selection {

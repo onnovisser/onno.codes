@@ -8,7 +8,7 @@ function IndexPage() {
     <Page>
       <div
         css={css`
-          min-height: 80vh;
+          min-height: 90vh;
         `}
       />
       <FeaturedWork />
