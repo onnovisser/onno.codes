@@ -100,15 +100,17 @@ function FeaturedWork() {
                         margin-top: auto;
                       `}
                     >
-                      <Column>
-                        <LinedBlock
-                          as={Link}
-                          to={node.fields.slug}
-                          css={button}
-                        >
-                          Read more <ArrowRightIcon />
-                        </LinedBlock>
-                      </Column>
+                      {node.frontmatter.detail && (
+                        <Column>
+                          <LinedBlock
+                            as={Link}
+                            to={node.fields.slug}
+                            css={button}
+                          >
+                            Read more <ArrowRightIcon />
+                          </LinedBlock>
+                        </Column>
+                      )}
                       <Column>
                         <LinedBlock
                           as="a"
