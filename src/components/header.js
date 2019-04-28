@@ -2,16 +2,17 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Link } from 'gatsby';
 import React from 'react';
+import mq from '../style/mq';
 import Content from './content';
-import CodepenIcon from './icon/codepen';
-import EmailIcon from './icon/email';
-import GithubIcon from './icon/github';
-import TwitterIcon from './icon/twitter';
+import Socials from './socials';
 
 const TextLink = styled(Link)`
   color: ${props => props.theme.color.neutralDark};
   font-family: ${props => props.theme.fontFamily.accent};
-  margin-right: 40px;
+
+  ${mq.mediumUp} {
+    margin-right: 40px;
+  }
 `;
 
 const IconLink = styled.a`
@@ -38,48 +39,28 @@ function Header() {
           align-items: center;
         `}
       >
-        <nav>
+        <nav
+          css={css`
+            ${mq.mediumDown} {
+              width: 100%;
+              max-width: 300px;
+              display: flex;
+              justify-content: space-between;
+            }
+          `}
+        >
           <TextLink to="/">Home</TextLink>
           <TextLink to="/work">Work</TextLink>
           <TextLink to="/about">About</TextLink>
           <TextLink to="/lab">Lab</TextLink>
         </nav>
-        <nav>
-          <IconLink
-            href="mailto:visser.onno@gmail.com"
-            aria-label="Send an Email"
-            title="Send an Email"
-          >
-            <EmailIcon />
-          </IconLink>
-          <IconLink
-            href="https://twitter.com/_onnovisser"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Twitter"
-            title="Twitter"
-          >
-            <TwitterIcon />
-          </IconLink>
-          <IconLink
-            href="https://github.com/onnovisser"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Github"
-            title="Github"
-          >
-            <GithubIcon />
-          </IconLink>
-          <IconLink
-            href="https://codepen.io/Penno/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Codepen"
-            title="Codepen"
-          >
-            <CodepenIcon />
-          </IconLink>
-        </nav>
+        <Socials
+          css={css`
+            ${mq.mediumDown} {
+              display: none;
+            }
+          `}
+        />
       </Content>
     </header>
   );
