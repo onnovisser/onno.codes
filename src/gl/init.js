@@ -1,5 +1,5 @@
 import * as Comlink from 'comlinkjs';
-import { replayEmitter } from '../utils/emitter';
+import emitter from '../utils/emitter';
 import SceneWorker from './scene.worker';
 
 async function init(canvas) {
@@ -14,24 +14,25 @@ async function init(canvas) {
   }
 
   const scene = await new Scene();
-  await scene.init(
-    target,
-    window.innerWidth,
-    window.innerHeight,
-    window.devicePixelRatio
-  );
+  // await scene.init(
+  //   target,
+  //   window.innerWidth,
+  //   window.innerHeight,
+  //   window.devicePixelRatio
+  // );
 
-  replayEmitter.on('changeTerrainState', evt => {
-    scene.replayEmitter.emit('changeTerrainState', evt);
+  emitter.onWithLast('changeTerrainState', evt => {
+    scene.emitter.emit('changeTerrainState', evt);
   });
 
-  window.addEventListener('resize', () => {
-    scene.resize(
-      window.innerWidth,
-      window.innerHeight,
-      window.devicePixelRatio
-    );
-  });
+
+  // window.addEventListener('resize', () => {
+  //   scene.resize(
+  //     window.innerWidth,
+  //     window.innerHeight,
+  //     window.devicePixelRatio
+  //   );
+  // });
 }
 
 export default init;

@@ -2,13 +2,15 @@ import { css } from '@emotion/core';
 import React, { useEffect } from 'react';
 import Content from '../components/content';
 import Page from '../components/page';
-import { replayEmitter } from '../utils/emitter';
+import emitter from '../utils/emitter';
+import LinedBlock from '../components/linedBlock';
+import Heading from '../components/heading';
 
 function AboutPage() {
   useEffect(() => {
-    replayEmitter.emit('changeTerrainState', 2);
+    emitter.emit('changeTerrainState', 2);
     return () => {
-      replayEmitter.emit('changeTerrainState', 1);
+      emitter.emit('changeTerrainState', 1);
     };
   }, []);
   return (
@@ -18,9 +20,18 @@ function AboutPage() {
           min-height: 90vh;
         `}
       />
-      <Content>
-        <p>About</p>
-      </Content>
+      <LinedBlock
+        css={css`
+          height: 10vh;
+          margin-bottom: 10vh;
+          display: flex;
+          align-items: center;
+        `}
+      >
+        <Content>
+          <Heading>About</Heading>
+        </Content>
+      </LinedBlock>
     </Page>
   );
 }

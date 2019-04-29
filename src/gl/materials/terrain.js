@@ -216,7 +216,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     // }
 
     this.app.emitter.on('update', this.update);
-    this.app.replayEmitter.on('changeTerrainState', this.setState);
+    this.app.emitter.onWithLast('changeTerrainState', this.setState);
 
     // gui
     //   .addNew('terrain', 0.99, 0, 1)
