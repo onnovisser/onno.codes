@@ -49,110 +49,117 @@ function FeaturedWork() {
 
         return (
           <Fragment key={node.fields.slug}>
-            <Content noPaddingMobile borderRight={i % 2 === 0} borderLeft>
-              <LinedColumns flipped={i % 2}>
-                <Column>
-                  <Heading
-                    css={css`
-                      position: sticky;
-                      top: 10vh;
-                      bottom: 0;
-                      color: ${themeColor};
-                      font-size: 5rem;
-                      font-weight: 700;
-                      opacity: 0.8;
-                      line-height: 1;
-                      transform: translateY(0.25em);
+            <div
+              css={css`
+                & + & {
+                  margin-top: 10vh;
+                }
 
-                      ${mq.mediumUp} {
-                        transform: none;
-                        line-height: 0.5;
-                        writing-mode: tb-rl;
-                      }
-                    `}
-                  >
-                    {shortTitle}
-                  </Heading>
-                </Column>
-                <Column>
-                  <LinedBlock
-                    css={css`
-                      min-height: 80vh;
-                      display: flex;
-                      flex-direction: column;
-                    `}
-                  >
-                    {image && <Image fluid={image} />}
-                    <Content
-                      css={theme => css`
-                        ${paddingY(theme)};
+                ${mq.mediumDown} {
+                  margin-top: 10vh;
+                  margin-bottom: 10vh;
+                }
+              `}
+            >
+              <Content noPaddingMobile borderRight={i % 2 === 0} borderLeft>
+                <LinedColumns flipped={i % 2}>
+                  <Column>
+                    <Heading
+                      css={css`
+                        position: sticky;
+                        top: 10vh;
+                        bottom: 0;
+                        color: ${themeColor};
+                        font-size: 3rem;
+                        font-weight: 700;
+                        opacity: 0.8;
+                        line-height: 1;
+                        transform: translateY(0.25em);
 
-                        > * + * {
-                          margin-top: 1em;
+                        ${mq.mediumUp} {
+                          font-size: 5rem;
+                          transform: none;
+                          line-height: 0.5;
+                          writing-mode: tb-rl;
                         }
                       `}
                     >
-                      <Heading as="h3">{title}</Heading>
-                      <p>{node.frontmatter.description}</p>
-                    </Content>
-                    <LinedColumns
+                      {shortTitle}
+                    </Heading>
+                  </Column>
+                  <Column>
+                    <LinedBlock
                       css={css`
-                        margin-top: auto;
+                        min-height: 80vh;
+                        display: flex;
+                        flex-direction: column;
                       `}
                     >
-                      {node.frontmatter.detail && (
+                      {image && <Image fluid={image} />}
+                      <Content
+                        css={theme => css`
+                          ${paddingY(theme)};
+
+                          > * + * {
+                            margin-top: 1em;
+                          }
+                        `}
+                      >
+                        <Heading as="h3">{title}</Heading>
+                        <p>{node.frontmatter.description}</p>
+                      </Content>
+                      <LinedColumns
+                        css={css`
+                          margin-top: auto;
+                        `}
+                      >
+                        {node.frontmatter.detail && (
+                          <Column>
+                            <LinedBlock
+                              as={Link}
+                              to={node.fields.slug}
+                              css={button}
+                            >
+                              Read more <ArrowRightIcon />
+                            </LinedBlock>
+                          </Column>
+                        )}
                         <Column>
                           <LinedBlock
-                            as={Link}
-                            to={node.fields.slug}
+                            as="a"
+                            href={node.frontmatter.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             css={button}
                           >
-                            Read more <ArrowRightIcon />
+                            Visit <ExternalIcon />
                           </LinedBlock>
                         </Column>
-                      )}
-                      <Column>
-                        <LinedBlock
-                          as="a"
-                          href={node.frontmatter.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          css={button}
-                        >
-                          Visit <ExternalIcon />
-                        </LinedBlock>
-                      </Column>
-                    </LinedColumns>
-                  </LinedBlock>
-                </Column>
-              </LinedColumns>
-            </Content>
-            {i < work.length - 1 ? (
-              <div
-                css={css`
-                  height: 10vh;
-                `}
-              />
-            ) : (
-              <LinedBlock
-                css={css`
-                  height: 10vh;
-                  display: flex;
-                  align-items: center;
-                `}
-              >
-                <Content>
-                  <Link to="/work">
-                    <Heading as="h3">
-                      More work <ArrowRightIcon />
-                    </Heading>
-                  </Link>
-                </Content>
-              </LinedBlock>
-            )}
+                      </LinedColumns>
+                    </LinedBlock>
+                  </Column>
+                </LinedColumns>
+              </Content>
+            </div>
           </Fragment>
         );
       })}
+
+      <LinedBlock
+        css={css`
+          height: 10vh;
+          display: flex;
+          align-items: center;
+        `}
+      >
+        <Content>
+          <Link to="/work">
+            <Heading as="h3">
+              More work <ArrowRightIcon />
+            </Heading>
+          </Link>
+        </Content>
+      </LinedBlock>
     </>
   );
 }
