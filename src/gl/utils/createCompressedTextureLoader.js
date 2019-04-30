@@ -11,14 +11,15 @@ ETC1: supported by most Android devices
 const suffixes = {
   opaque: {
     s3tc: 'dxt1',
+    astc: 'astc-8x5',
     etc1: 'etc1',
     pvrtc: 'pvrtc2BPP',
   },
   transparent: {
     s3tc: 'dxt5',
-    astc: 'astc-4x4',
+    astc: 'astc-5x5A',
     etc: 'etc2A',
-    pvrtc: 'pvrtc4BPP',
+    pvrtc: 'pvrtc2BPPA',
   },
 };
 
