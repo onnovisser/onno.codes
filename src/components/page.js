@@ -15,6 +15,7 @@ function Page({ children, customSEO }) {
       }
     }
   `);
+
   return (
     <>
       {!customSEO && <SEO buildTime={data.site.buildTime} />}

@@ -7,6 +7,7 @@ import mq from '../../style/mq';
 import Content from '../content';
 import Heading from '../heading';
 import LinedBlock from '../linedBlock';
+import Text from '../text';
 
 function FeaturedWork() {
   const data = useStaticQuery(query);
@@ -14,19 +15,6 @@ function FeaturedWork() {
 
   return (
     <>
-      <LinedBlock
-        css={css`
-          height: 10vh;
-          margin-bottom: 10vh;
-          display: flex;
-          align-items: center;
-        `}
-      >
-        <Content>
-          <Heading>Work</Heading>
-        </Content>
-      </LinedBlock>
-
       <Content
         css={css`
           display: grid;
@@ -61,13 +49,16 @@ function FeaturedWork() {
                   height: 100%;
                 `}
               >
-                {image && <Image fluid={{ ...image, aspectRatio: 1.2 }} />}
+                {image && (
+                  <Image fluid={{ ...image, aspectRatio: 1.2 }} fadeIn />
+                )}
                 <div
                   css={css`
                     padding: 10px;
                   `}
                 >
-                  <Heading as="h4">{title}</Heading>
+
+                  <Heading as="h2" size={300}>{title}             <Text size={200} variant="display" as="time" dateTime={node.frontmatter.timestamp}>({node.frontmatter.year})</Text></Heading>
                   {/* <p>{node.frontmatter.description}</p> */}
                 </div>
               </LinedBlock>
@@ -109,7 +100,8 @@ const query = graphql`
           frontmatter {
             title
             url
-            date(formatString: "DD MMMM, YYYY")
+            year:date(formatString: "YYYY")
+            timestamp:date
             categories
             themeColor
             description

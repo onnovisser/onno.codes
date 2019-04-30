@@ -8,15 +8,11 @@ import Socials from './socials';
 
 const TextLink = styled(Link)`
   color: ${props => props.theme.color.neutralDark};
-  font-family: ${props => props.theme.fontFamily.accent};
+  font-family: ${props => props.theme.fontFamily.display};
 
   ${mq.mediumUp} {
     margin-right: 40px;
   }
-`;
-
-const IconLink = styled.a`
-  margin-left: 25px;
 `;
 
 function Header() {

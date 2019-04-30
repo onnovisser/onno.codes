@@ -21,7 +21,7 @@ const Column = styled.div`
   }
 `;
 
-function SplitColumns({ left, right, children, flipped, ...rest }) {
+function LinedColumns({ left, right, children, flipped, ...rest }) {
   return (
     <div
       css={css`
@@ -61,5 +61,5 @@ function SplitColumns({ left, right, children, flipped, ...rest }) {
   );
 }
 
-export default SplitColumns;
+export default LinedColumns;
 export { Column };

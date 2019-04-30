@@ -3,14 +3,17 @@ import styled from '@emotion/styled';
 import React from 'react';
 import mq from '../style/mq';
 import LinedBlock from './linedBlock';
+import { paddingY as includePaddingY } from '../style/utils';
 
 function Content({
   children,
+  as: Comp = 'div',
   narrow,
   noPaddingMobile,
   border,
   borderLeft,
   borderRight,
+  paddingY,
   ...rest
 }) {
   return (
@@ -18,6 +21,8 @@ function Content({
       css={({ size }) => css`
         width: 100%;
         display: grid;
+
+        ${paddingY && includePaddingY({size})}
         grid-template-columns:
           minmax(${size.pagePaddingMobile}, 1fr) minmax(
             auto,
@@ -45,7 +50,7 @@ function Content({
         }
       `}
     >
-      <div
+      <Comp
         css={css`
           position: relative;
           grid-column: 2 / span 1;
@@ -53,7 +58,7 @@ function Content({
         {...rest}
       >
         {children}
-      </div>
+      </Comp>
       {(border || borderLeft) && (
         <>
           <LinedBlock

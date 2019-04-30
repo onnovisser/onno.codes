@@ -7,13 +7,13 @@ const base = theme => css`
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
+    /* min-height: 100%; */
     overflow-x: hidden;
   }
 
   body {
     background: ${theme.color.neutralLightest};
-    background: #f0f0f0;
+    /* background: #f0f0f0; */
   }
 
   ::selection {
@@ -49,35 +49,6 @@ const base = theme => css`
     }
     &:focus {
       outline: 0;
-    }
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: ${theme.color.grey.dark};
-    font-family: ${theme.fontFamily.accent};
-    /* font-weight: 700; */
-  }
-
-  /*  =====  MDX  ===== */
-
-  h2 {
-    font-size: 2.441rem;
-  }
-  h3 {
-    font-size: 1.953rem;
-  }
-
-  ${mq.mediumUp} {
-    h2 {
-      font-size: 2.074rem;
-    }
-    h3 {
-      font-size: 1.728rem;
     }
   }
 

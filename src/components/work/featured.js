@@ -4,13 +4,13 @@ import Image from 'gatsby-image';
 import get from 'lodash/get';
 import React, { Fragment } from 'react';
 import mq from '../../style/mq';
-import { paddingY } from '../../style/utils';
 import Content from '../content';
 import Heading from '../heading';
 import ArrowRightIcon from '../icon/arrowRight';
 import ExternalIcon from '../icon/external';
 import LinedBlock from '../linedBlock';
 import LinedColumns, { Column } from '../linedColumns';
+import Text from '../text';
 
 const button = ({ color }) => css`
   display: flex;
@@ -38,7 +38,7 @@ function FeaturedWork() {
         `}
       >
         <Content>
-          <Heading>Work</Heading>
+          <Heading as="h2">Featured work</Heading>
         </Content>
       </LinedBlock>
       {work.map(({ node }, i) => {
@@ -95,18 +95,17 @@ function FeaturedWork() {
                         flex-direction: column;
                       `}
                     >
-                      {image && <Image fluid={image} />}
+                      {image && <Image fluid={image} fadeIn />}
                       <Content
-                        css={theme => css`
-                          ${paddingY(theme)};
-
+                        paddingY
+                        css={css`
                           > * + * {
                             margin-top: 1em;
                           }
                         `}
                       >
                         <Heading as="h3">{title}</Heading>
-                        <p>{node.frontmatter.description}</p>
+                        <Text>{node.frontmatter.description}</Text>
                       </Content>
                       <LinedColumns
                         css={css`
@@ -153,11 +152,9 @@ function FeaturedWork() {
         `}
       >
         <Content>
-          <Link to="/work">
-            <Heading as="h3">
-              More work <ArrowRightIcon />
-            </Heading>
-          </Link>
+          <Heading as={Link} to="/work">
+            More work <ArrowRightIcon />
+          </Heading>
         </Content>
       </LinedBlock>
     </>
