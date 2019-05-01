@@ -35,7 +35,7 @@ const fontSize = {
 
 const fontFamily = {
   base: `'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif`,
-  accent: `'Lekton', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', serif`,
+  display: `'Lekton', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', serif`,
 };
 
 const breakpoints = {

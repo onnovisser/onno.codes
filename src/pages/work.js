@@ -2,15 +2,12 @@ import { css } from '@emotion/core';
 import React from 'react';
 import Page from '../components/page';
 import AllWork from '../components/work/all';
+import PageHeading from '../components/pageHeading';
 
 function WorkPage() {
   return (
     <Page>
-      <div
-        css={css`
-          min-height: 50vh;
-        `}
-      />
+    <PageHeading>I can make anything work</PageHeading>
       <AllWork />
     </Page>
   );
