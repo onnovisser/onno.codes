@@ -14,17 +14,16 @@ async function init(canvas) {
   }
 
   const scene = await new Scene();
-  // await scene.init(
-  //   target,
-  //   window.innerWidth,
-  //   window.innerHeight,
-  //   window.devicePixelRatio
-  // );
+  await scene.init(
+    target,
+    window.innerWidth,
+    window.innerHeight,
+    window.devicePixelRatio
+  );
 
-  emitter.onWithLast('changeTerrainState', evt => {
-    scene.emitter.emit('changeTerrainState', evt);
+  emitter.onWithLast('changePage', evt => {
+    scene.emitter.emit('changePage', evt);
   });
-
 
   // window.addEventListener('resize', () => {
   //   scene.resize(

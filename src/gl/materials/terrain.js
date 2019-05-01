@@ -1,5 +1,6 @@
 import glsl from 'glslify';
 import * as THREE from 'three';
+// import gui from '../gui';
 import { lerp } from '../utils/math';
 
 const terrainStates = {
@@ -24,6 +25,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
       insideAltColor: { value: true },
       thickness: { value: 0.01 },
       terrainProgress: { value: 0.99 },
+      buildupProgress: { value: 0 },
       dashEnabled: { value: false },
       dashRepeats: { value: 2.0 },
       dashOverlap: { value: false },
@@ -35,6 +37,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     },
     vertexParameters: /* glsl */ `
       uniform float time;
+      uniform float buildupProgress;
 
       attribute vec3 barycentric;
       attribute float even;
@@ -50,6 +53,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
       vBarycentric = barycentric;
       vPosition = position.xyz;
       vEven = even;
+      // transformed.y = max(0., transformed.y * buildupProgress);
       // vUv = ( uvTransform * vec3( uv, 1 ) ).xy;
     `,
     fragmentParameters: glsl`
@@ -59,6 +63,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     uniform float time;
     uniform float thickness;
     uniform float terrainProgress;
+    uniform float buildupProgress;
 
     uniform float dashRepeats;
     uniform float dashLength;
@@ -128,7 +133,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
         return outColor;
       }
     `,
-    fragmentDiffuse: /* glsl */ `
+    fragmentDiffuse: glsl`
 
         vec4 col = texture2D( tex, vUv );
         col = mapTexelToLinear( col );
@@ -141,9 +146,10 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
         // float mask = getStyledWireframe(vBarycentric, clamp(influence * 4. - 4. + (terrainProgress + sin(time)) * 8., -1.5, 1.)).a;
 
         // gl_FragColor.rgb = mix(wireframe.rgb, diffuseColor.rgb, 1. - mask); // smoothstep(.4, .401, influence)
-        gl_FragColor.rgb = mix(wireframe.rgb *  (gl_FragColor.rgb / 4. + .75), col.rgb, 1. - mask); // smoothstep(.4, .401, influence)
+        gl_FragColor.rgb = mix(wireframe.rgb * (gl_FragColor.rgb / 4. + .75), col.rgb, 1. - mask); // smoothstep(.4, .401, influence)
         // gl_FragColor.rgb = mix((wireframe.rgb) *  (gl_FragColor.rgb), col.rgb, 1. - mask); // smoothstep(.4, .401, influence)
 
+        gl_FragColor.rgb = mix(#fafafc, gl_FragColor.rgb, clamp(buildupProgress * 3. + ((1. - influence) - 1.), 0., 1.));
 
 
 
@@ -158,12 +164,14 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
   };
 
   terrainState = terrainStates.WIREFRAME;
+  visible = false;
 
   constructor(props, uniforms, app) {
     super({
       ...props,
       // map: loadTexture('/white.png'),
       color: new THREE.Color(0xfafafc),
+      flatShading :true,
     });
     this.app = app;
     this.addedUniforms = uniforms;
@@ -214,9 +222,8 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     //   mesh.customDepthMaterial = customMaterial
     //   mesh.customDistanceMaterial = customMaterial
     // }
-
     this.app.emitter.on('update', this.update);
-    this.app.emitter.onWithLast('changeTerrainState', this.setState);
+    this.app.emitter.onWithLast('changePage', this.setState);
 
     // gui
     //   .addNew('terrain', 0.99, 0, 1)
@@ -227,27 +234,36 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     this.uniforms.time.value = time;
     const terrainProgressTarget =
       this.terrainState === terrainStates.WIREFRAME ? 1 : 0;
-    // console.log(
-    //   terrainProgressTarget,
-    //   this.uniforms.terrainProgress.value,
-    //   delta
-    // );
     this.uniforms.terrainProgress.value = lerp(
       this.uniforms.terrainProgress.value,
       terrainProgressTarget,
-      delta
+      delta * 0.5
+    );
+
+    this.uniforms.buildupProgress.value = lerp(
+      this.uniforms.buildupProgress.value,
+      visible ? 1: 0,
+      delta * .5
     );
   };
 
   setState = state => {
-    console.log('changeTerrainState', state);
-    this.terrainState = state;
+    console.log('changePage', state);
+    if (state === 0) {
+      this.terrainState = terrainStates.WIREFRAME;
+    } else {
+      this.terrainState = terrainStates.TEXTURE;
+    }
   };
+
+  show() {
+    this.visible = true;
+  }
 
   dispose() {
     super.dispose();
 
-    this.app.off('update', this.update);
+    // this.app.emitter.off('update', this.update);
   }
 }
 

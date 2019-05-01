@@ -7,11 +7,31 @@ import TerrainMaterial from './materials/terrain';
 import createCompressedTextureLoader from './utils/createCompressedTextureLoader';
 import { addBarycentricCoordinates, unindexBufferGeometry } from './utils/geom';
 import loadCanvasTexture from './utils/loadCanvasTexture';
+import { lerp, smoothstep } from './utils/math';
 import Ticker from './utils/ticker';
 
+// 1.00 19
+// 1.10 17.1
+// 1.25 15.15
+// 1.35 14
+// 1.50 12.7
+// 1.75 10.8
+
+const states = {
+  DEFAULT: 0,
+  ABOUT: 1,
+};
+
+const cameraPositions = {
+  [states.DEFAULT]: [380, 114, 61.784],
+  [states.ABOUT]: [391.292, 117.129, 61.784],
+};
+
 class App {
+  state = states.DEFAULT;
   ticker = new Ticker();
   emitter = createEmitter();
+  focalLength = 10.801;
   async init(canvas, windowWidth, windowHeight, pixelRatio) {
     this.scene = new THREE.Scene();
     this.scene.fog = new THREE.Fog(0xfafafc, 0, 1000);
@@ -22,8 +42,9 @@ class App {
       0.1,
       5000
     );
-    this.camera.setFocalLength(10);
-    this.camera.position.set(391.292, 117.129, 61.784);
+    this.camera.setFocalLength(this.focalLength);
+    console.log(this.camera);
+    this.camera.position.set(...cameraPositions[this.state]);
     // camera.position.set(10, 1, 0)
     // camera.rotation.set(-20.333 * (Math.PI / 180), 80.368 * (Math.PI / 180), -10.675 * (Math.PI / 180))
     this.camera.rotation.set(
@@ -48,10 +69,20 @@ class App {
     gl.enable(gl.SAMPLE_ALPHA_TO_COVERAGE);
 
     const { x, y, z } = this.camera.position;
-    // gui.addNew('x', x, x - 20, x + 6).onChange(v => (this.camera.position.x = v));
-    // gui.addNew('y', y, y - 6, y + 6).onChange(v => (this.camera.position.y = v));
-    // gui.addNew('z', z, z - 6, z + 6).onChange(v => (this.camera.position.z = v));
-    // gui.addNew('Focal Length', 10, 9, 14).onChange(v => this.camera.setFocalLength(v));
+    // gui
+    //   .addNew('x', x, x - 20, x + 6)
+    //   .onChange(v => (this.camera.position.x = v));
+    // gui
+    //   .addNew('y', y, y - 6, y + 6)
+    //   .onChange(v => (this.camera.position.y = v));
+    // gui
+    //   .addNew('z', z, z - 6, z + 6)
+    //   .onChange(v => (this.camera.position.z = v));
+    // gui.addNew('Focal Length', this.focalLength, 9.01, 24).onChange(v => {
+    //   console.log(v);
+    //   this.focalLength = v;
+    //   this.camera.setFocalLength(v);
+    // });
 
     // controls = new OrbitControls(this.camera, document);
     this.effectRenderer = new Renderer(this.renderer, this.scene, this.camera);
@@ -60,6 +91,7 @@ class App {
     this.resize(windowWidth, windowHeight, pixelRatio);
 
     this.initGeometry();
+    this.emitter.onWithLast('changePage', this.setState);
     this.ticker.on('tick', this.update);
     this.ticker.start();
   }
@@ -131,13 +163,23 @@ class App {
           this
         );
         this.scene.add(obj);
+        terrain.material.show();
       });
     });
   }
+
+  setState = v => {
+    this.state = v;
+  };
+
   update = e => {
     // controls.update();
     this.effectRenderer.render();
     this.emitter.emit('update', e);
+    const newPos = this.camera.position
+      .toArray()
+      .map((v, i) => lerp(v, cameraPositions[this.state][i], e.delta * 0.8));
+    this.camera.position.set(...newPos);
   };
 
   resize = (windowWidth, windowHeight, pixelRatio) => {
@@ -147,6 +189,9 @@ class App {
     this.renderer.setSize(windowWidth, windowHeight, false);
     this.effectRenderer.setSize(canvasWidth, canvasHeight);
     this.camera.aspect = windowWidth / windowHeight;
+    this.focalLength = lerp(10.8, 19, smoothstep(1.75, 1, this.camera.aspect));
+    this.camera.setFocalLength(this.focalLength);
+    // console.log(this.camera.getFocalLength());
     this.camera.updateProjectionMatrix();
   };
 }
