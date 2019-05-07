@@ -1,3 +1,2 @@
 User-agent: *
-
-sitemap: https://onno.codes/sitemap.xml
+Disallow: /

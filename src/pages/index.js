@@ -16,7 +16,7 @@ function IndexPage() {
             cursor: pointer;
           `}
         >
-          {hovered ? 'I Break Things' : 'I Make Things'}
+          {hovered && false ? 'I Break Things' : 'I Make Things'}
         </span>
       </PageHeading>
       <FeaturedWork />

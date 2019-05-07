@@ -1,13 +1,12 @@
-import { css } from '@emotion/core';
 import React from 'react';
 import Page from '../components/page';
-import AllWork from '../components/work/all';
 import PageHeading from '../components/pageHeading';
+import AllWork from '../components/work/all';
 
 function WorkPage() {
   return (
     <Page>
-    <PageHeading>I can make anything work</PageHeading>
+      <PageHeading>I can make anything work</PageHeading>
       <AllWork />
     </Page>
   );
