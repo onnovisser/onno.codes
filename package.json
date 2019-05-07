@@ -1,9 +1,10 @@
 {
   "name": "portfolio",
   "description": "",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
+    "deploy": "./scripts/build.sh",
     "build": "gatsby build",
     "start": "gatsby develop -o",
     "starts": "gatsby develop -o -H $HOSTNAME -p 8000",
