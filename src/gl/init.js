@@ -25,13 +25,13 @@ async function init(canvas) {
     scene.emitter.emit('changePage', evt);
   });
 
-  // window.addEventListener('resize', () => {
-  //   scene.resize(
-  //     window.innerWidth,
-  //     window.innerHeight,
-  //     window.devicePixelRatio
-  //   );
-  // });
+  window.addEventListener('resize', () => {
+    scene.resize(
+      window.innerWidth,
+      window.innerHeight,
+      window.devicePixelRatio
+    );
+  });
 }
 
 export default init;

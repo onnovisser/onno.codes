@@ -5,11 +5,11 @@ import React, { useEffect } from 'react';
 import Content from '../components/content';
 import LinedBlock from '../components/linedBlock';
 import Page from '../components/page';
+import PageHeading from '../components/pageHeading';
 import Socials from '../components/socials';
 import Text from '../components/text';
 import mq from '../style/mq';
 import emitter from '../utils/emitter';
-import PageHeading from '../components/pageHeading';
 
 function AboutPage({ data }) {
   useEffect(() => {
@@ -20,7 +20,7 @@ function AboutPage({ data }) {
   }, []);
   return (
     <Page>
-    <PageHeading>...</PageHeading>
+    <PageHeading></PageHeading>
 
       <Content
         as={LinedBlock}

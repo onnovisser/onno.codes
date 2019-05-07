@@ -242,7 +242,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
 
     this.uniforms.buildupProgress.value = lerp(
       this.uniforms.buildupProgress.value,
-      visible ? 1: 0,
+      this.visible ? 1: 0,
       delta * .5
     );
   };

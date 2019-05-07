@@ -29,7 +29,7 @@ const Post = ({
       <Content>
         <Heading>{post.title}</Heading>
         {post.date} &mdash; {postNode.timeToRead} Min Read &mdash; In{' '}
-        {post.categories.map((cat, i) => (
+        {post.categories && post.categories.map((cat, i) => (
           <React.Fragment key={cat}>
             {!!i && ', '}
             <Link to={`/categories/${kebabCase(cat)}`}>{cat}</Link>

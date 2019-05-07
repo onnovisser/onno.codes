@@ -57,8 +57,17 @@ function FeaturedWork() {
                     padding: 10px;
                   `}
                 >
-
-                  <Heading as="h2" size={300}>{title}             <Text size={200} variant="display" as="time" dateTime={node.frontmatter.timestamp}>({node.frontmatter.year})</Text></Heading>
+                  <Heading as="h2" size={300}>
+                    {title}{' '}
+                    <Text
+                      size={200}
+                      variant="display"
+                      as="time"
+                      dateTime={node.frontmatter.timestamp}
+                    >
+                      ({node.frontmatter.year})
+                    </Text>
+                  </Heading>
                   {/* <p>{node.frontmatter.description}</p> */}
                 </div>
               </LinedBlock>
@@ -100,8 +109,8 @@ const query = graphql`
           frontmatter {
             title
             url
-            year:date(formatString: "YYYY")
-            timestamp:date
+            year: date(formatString: "YYYY")
+            timestamp: date
             categories
             themeColor
             description
