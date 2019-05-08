@@ -2,12 +2,21 @@ import { css } from '@emotion/core';
 import React, { useEffect, useRef, useState } from 'react';
 import init from '../gl/init';
 
+console.log(performance.now());
+
 function Background() {
   const [visible, setVisible] = useState(false);
   const ref = useRef();
 
   useEffect(() => {
-    requestIdleCallback(() => {
+    console.log(performance.now());
+    (window.requestIdleCallback ? requestIdleCallback : requestAnimationFrame)(() => {
+      console.log(performance.now());
+      if (performance.now() > 4000) {
+        // slow network, don't load all the webgl stuff
+        // TODO: Maybe show something as a fallback
+        return;
+      }
       init(ref.current).then(() => {
         setVisible(true);
       });
