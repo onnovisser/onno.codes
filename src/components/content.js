@@ -2,8 +2,8 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import React from 'react';
 import mq from '../style/mq';
-import LinedBlock from './linedBlock';
 import { paddingY as includePaddingY } from '../style/utils';
+import LinedBlock from './linedBlock';
 
 function Content({
   children,
@@ -22,7 +22,7 @@ function Content({
         width: 100%;
         display: grid;
 
-        ${paddingY && includePaddingY({size})}
+        ${paddingY && includePaddingY({ size })}
         grid-template-columns:
           minmax(${size.pagePaddingMobile}, 1fr) minmax(
             auto,
@@ -34,6 +34,11 @@ function Content({
           css`
             grid-template-columns: 0 minmax(auto, 1400px) 0;
             max-width: 100%;
+
+            ${mq.mediumDown} {
+              overflow-x: hidden;
+              padding-top: 1px;
+            }
           `}
 
         ${mq.mediumUp} {

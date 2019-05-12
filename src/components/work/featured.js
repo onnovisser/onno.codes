@@ -65,19 +65,18 @@ function FeaturedWork() {
                 <LinedColumns flipped={i % 2}>
                   <Column>
                     <Heading
+                      size={900}
                       css={css`
                         position: sticky;
                         top: 10vh;
                         bottom: 0;
                         color: ${themeColor};
-                        font-size: 3rem;
                         font-weight: 700;
                         opacity: 0.8;
                         line-height: 1;
                         transform: translateY(0.25em);
 
                         ${mq.mediumUp} {
-                          font-size: 5rem;
                           transform: none;
                           line-height: 0.5;
                           writing-mode: tb-rl;

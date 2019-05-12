@@ -20,7 +20,7 @@ function AboutPage({ data }) {
   }, []);
   return (
     <Page>
-    <PageHeading></PageHeading>
+      <PageHeading />
 
       <Content
         as={LinedBlock}
@@ -50,8 +50,15 @@ function AboutPage({ data }) {
                 display: block;
                 margin: 0 auto 20px;
 
+                picture img {
+                  object-position: center 30% !important;
+                }
+
                 ${mq.mediumUp} {
-                  margin-right: 20px;
+                  width: 200px;
+                  height: 200px;
+                  flex: 1 0 200px;
+                  margin-right: 30px;
                   float: left;
                 }
               `}
