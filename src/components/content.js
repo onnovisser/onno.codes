@@ -34,11 +34,6 @@ function Content({
           css`
             grid-template-columns: 0 minmax(auto, 1400px) 0;
             max-width: 100%;
-
-            ${mq.mediumDown} {
-              overflow-x: hidden;
-              padding-top: 1px;
-            }
           `}
 
         ${mq.mediumUp} {

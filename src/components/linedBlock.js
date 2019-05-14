@@ -24,18 +24,19 @@ const LinedBlock = styled.div`
     bottom: 0;
   }
 
-  ${({ vertical }) =>
+  ${({ vertical, theme }) =>
     vertical &&
     css`
-      &::before,
-      &::after {
+      box-shadow: 1px 0 0 0 ${theme.color.neutralLight};
+
+      &::before {
         width: 1px;
         height: 100%;
         top: 0px;
       }
 
       &::after {
-        left: 100%;
+        display: none;
       }
     `}
 `;
