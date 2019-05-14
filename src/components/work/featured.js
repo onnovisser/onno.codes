@@ -77,6 +77,7 @@ function FeaturedWork() {
                         transform: translateY(0.25em);
 
                         ${mq.mediumUp} {
+                          font-size: 5rem;
                           transform: none;
                           line-height: 0.5;
                           writing-mode: tb-rl;
@@ -195,6 +196,7 @@ const query = graphql`
             categories
             themeColor
             description
+            detail
           }
           # excerpt(pruneLength: 200)
           # timeToRead

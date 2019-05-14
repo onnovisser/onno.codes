@@ -6,7 +6,7 @@ import mq from '../style/mq';
 
 const Text = styled.p`
   ${({ color, theme, size, weight, italic, variant }) => css`
-    font-size: ${((size/4000 + Math.pow(size/1000, 3)) * 4 + .6).toFixed(1)}rem;
+    font-size: ${((size/4000 + Math.pow(size/1000, 5)) * 4 + .6).toFixed(1)}rem;
     font-weight: ${weight};
     font-style: ${italic ? 'italic' : 'normal'};
     font-family: ${theme.fontFamily[variant]};
@@ -14,7 +14,7 @@ const Text = styled.p`
     color: ${theme.color[color]};
 
     ${mq.mediumDown} {
-      font-size: ${((size/4000 + Math.pow(size/1000, 2)) * 2 + .6).toFixed(1)}rem;
+      font-size: ${((size/4000 + Math.pow(size/1000, 3)) * 2 + .6).toFixed(1)}rem;
     }
   `}
 `;

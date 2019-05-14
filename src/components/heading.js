@@ -5,7 +5,7 @@ Heading.propTypes = {
   ...Text.propTypes,
 };
 
-function Heading({ size = 500, weight = 400, as = 'h2', variant = 'display', ...rest }) {
+function Heading({ size = 600, weight = 400, as = 'h2', variant = 'display', ...rest }) {
   return <Text size={size} weight={weight} as={as} variant={variant} {...rest} />;
 }
 

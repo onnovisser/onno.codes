@@ -57,10 +57,9 @@ function FeaturedWork() {
                     padding: 10px;
                   `}
                 >
-                  <Heading as="h2" size={300}>
+                  <Heading as="h2" size={500}>
                     {title}{' '}
                     <Text
-                      size={200}
                       variant="display"
                       as="time"
                       dateTime={node.frontmatter.timestamp}
@@ -68,7 +67,15 @@ function FeaturedWork() {
                       ({node.frontmatter.year})
                     </Text>
                   </Heading>
-                  {/* <p>{node.frontmatter.description}</p> */}
+                  {/* <Text
+                    css={css`
+                      ${mq.mediumDown} {
+                        display: none;
+                      }
+                    `}
+                  >
+                    {node.frontmatter.description}
+                  </Text> */}
                 </div>
               </LinedBlock>
             </LinedBlock>
