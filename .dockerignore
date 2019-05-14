@@ -2,15 +2,16 @@
 **
 
 # Allow files and directories
-!/static/**
-!/src/**
-!/package.json
-!/yarn.lock
-!/eslintrc.js
-!/gatsby-config.js
-!/gatsby-node.js
-!/gatsby-browser.js
-!/gatsby-ssr.js
+!/public/**
+# !/static/**
+# !/src/**
+# !/package.json
+# !/yarn.lock
+# !/eslintrc.js
+# !/gatsby-config.js
+# !/gatsby-node.js
+# !/gatsby-browser.js
+# !/gatsby-ssr.js
 
 # Ignore unnecessary files inside allowed directories
 # This should go after the allowed directories

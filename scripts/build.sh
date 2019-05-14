@@ -20,5 +20,6 @@ version="$(node -pe "require('./package.json').version")"
 echo $name
 echo $version
 
+yarn build
 docker build --rm -t $name:$version .
 docker save $name:$version | gzip | pv | ssh onno@onno.codes "docker load"
