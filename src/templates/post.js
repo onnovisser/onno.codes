@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { graphql, Link } from 'gatsby';
 import MDXRenderer from 'gatsby-mdx/mdx-renderer';
 import kebabCase from 'lodash/kebabCase';
@@ -6,13 +5,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Content from '../components/content';
 import Heading from '../components/heading';
+import LinedBlock from '../components/linedBlock';
+import { css} from '@emotion/core'
 import Page from '../components/page';
 import SEO from '../components/seo';
 import config from '../config';
-
-const PostContent = styled.div`
-  margin-top: 4rem;
-`;
+import PageHeading from '../components/pageHeading';
 
 const Post = ({
   pageContext: { slug, prev, next },
@@ -22,23 +20,28 @@ const Post = ({
 
   return (
     <Page customSEO>
+      <PageHeading>{post.title}</PageHeading>
       <SEO postPath={slug} postNode={postNode} article />
 
       <Link to="/">{config.siteTitle}</Link>
 
-      <Content>
-        <Heading>{post.title}</Heading>
         {post.date} &mdash; {postNode.timeToRead} Min Read &mdash; In{' '}
-        {post.categories && post.categories.map((cat, i) => (
-          <React.Fragment key={cat}>
-            {!!i && ', '}
-            <Link to={`/categories/${kebabCase(cat)}`}>{cat}</Link>
-          </React.Fragment>
-        ))}
-        <PostContent>
-          <MDXRenderer>{postNode.code.body}</MDXRenderer>
-        </PostContent>
-      </Content>
+        {post.categories &&
+          post.categories.map((cat, i) => (
+            <React.Fragment key={i}>
+              {!!i && ', '}
+              <Link to={`/categories/${kebabCase(cat)}`}>{cat}</Link>
+            </React.Fragment>
+          ))}
+        <Content narrow noPaddingMobile>
+          <LinedBlock>
+            <LinedBlock vertical css={css`
+              margin-left: -1px;
+            `}>
+              <MDXRenderer>{postNode.code.body}</MDXRenderer>
+            </LinedBlock>
+          </LinedBlock>
+        </Content>
     </Page>
   );
 };

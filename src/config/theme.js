@@ -20,7 +20,7 @@ const color = {
 
 const size = {
   contentWide: '1200px',
-  contentNarrow: '650px',
+  contentNarrow: '700px',
   pagePadding: '40px',
   pagePaddingMobile: '20px',
 };

@@ -2,6 +2,7 @@ import { css } from '@emotion/core';
 import { MDXProvider } from '@mdx-js/react';
 import { preToCodeBlock } from 'mdx-utils';
 import React from 'react';
+import Code from '../components/code';
 import Heading from '../components/heading';
 import Layout from '../components/layout';
 import Text from '../components/text';
@@ -29,7 +30,7 @@ const components = {
     const props = preToCodeBlock(preProps);
     // if there's a codeString and some props, we passed the test
     if (props) {
-      return <pre {...props} />;
+      return <Code {...props} />;
     }
     // it's possible to have a pre without a code in it
     return <pre {...preProps} />;

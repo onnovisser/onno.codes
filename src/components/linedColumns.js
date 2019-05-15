@@ -21,37 +21,37 @@ const Column = styled.div`
   }
 `;
 
-function LinedColumns({ left, right, children, flipped, ...rest }) {
+function LinedColumns({ left, right, children, flipped, desktopOnly = true, ...rest }) {
   return (
     <div
       css={css`
         display: flex;
         align-items: stretch;
-        flex-direction: column;
         position: relative;
+        flex-direction: row;
 
-        ${mq.mediumUp} {
-          flex-direction: row;
+        ${flipped
+          ? css`
+              flex-direction: row-reverse;
 
-          ${flipped
-            ? css`
-                flex-direction: row-reverse;
-
-                > ${Column}:first-of-type::before {
-                  display: none;
-                }
-              `
-            : css`
-                > ${Column}:last-of-type::before {
-                  display: none;
-                }
-              `}
-        }
+              > ${Column}:first-of-type::before {
+                display: none;
+              }
+            `
+          : css`
+              > ${Column}:last-of-type::before {
+                display: none;
+              }
+            `}
 
         ${mq.mediumDown} {
-          > ${Column}::before {
-            display: none;
-          }
+          ${desktopOnly &&
+            css`
+              flex-direction: column;
+              > ${Column}::before {
+                display: none;
+              }
+            `}
         }
       `}
       {...rest}
