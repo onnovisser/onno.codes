@@ -1,8 +1,26 @@
-import { MDXProvider } from '@mdx-js/tag';
+import { css } from '@emotion/core';
+import { MDXProvider } from '@mdx-js/react';
 import { preToCodeBlock } from 'mdx-utils';
 import React from 'react';
-import Layout from '../components/layout';
 import Heading from '../components/heading';
+import Layout from '../components/layout';
+import Text from '../components/text';
+import { paddingX, paddingY } from '../style/utils';
+
+function Wrapper(props) {
+  return (
+    <div
+      {...props}
+      css={theme => css`
+        ${paddingX(theme)}
+        ${paddingY(theme)}
+        & + & {
+          padding-top: 0;
+        }
+      `}
+    />
+  );
+}
 
 // components is its own object outside of render so that the references to
 // components are stable
@@ -16,9 +34,26 @@ const components = {
     // it's possible to have a pre without a code in it
     return <pre {...preProps} />;
   },
-  h1: (props) => <Heading {...props} as="h1" size={800} />,
-  h2: (props) => <Heading {...props} as="h2" size={700} />,
-  h3: (props) => <Heading {...props} as="h3" size={600} />,
+  p: props => (
+    <Wrapper>
+      <Text {...props} />
+    </Wrapper>
+  ),
+  h1: props => (
+    <Wrapper>
+      <Heading {...props} as="h1" size={800} />
+    </Wrapper>
+  ),
+  h2: props => (
+    <Wrapper>
+      <Heading {...props} as="h2" size={700} />
+    </Wrapper>
+  ),
+  h3: props => (
+    <Wrapper>
+      <Heading {...props} as="h3" size={600} />
+    </Wrapper>
+  ),
 };
 
 export function wrapRootElement({ element }) {
