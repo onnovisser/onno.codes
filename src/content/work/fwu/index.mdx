@@ -7,9 +7,28 @@ categories:
 url: https://forwardyou.com
 published: true
 featured: true
-detail: false
+detail: true
 themeColor: '#00879b'
 description: A web app for customers of ForwardU
 ---
 
-todo
+import Lines from './lines';
+import BrowserOnlyRender from '../../../components/browserOnlyRender';
+import LinedColumns, { Column } from '../../../components/linedColumns';
+import LinedBlock from '../../../components/linedBlock';
+import NoiseShader from './noiseShader';
+
+asd
+
+<BrowserOnlyRender>
+  <LinedBlock>
+    <LinedColumns desktopOnly={false}>
+      <Column>
+        <Lines />
+      </Column>
+      <Column style={{ paddingTop: '50%', position: 'relative', height: 0 }}>
+        <NoiseShader />
+      </Column>
+    </LinedColumns>
+  </LinedBlock>
+</BrowserOnlyRender>
