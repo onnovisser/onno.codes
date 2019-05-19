@@ -69,6 +69,7 @@ exports.createPages = async ({ graphql, actions }) => {
               frontmatter {
                 title
                 categories
+                detail
               }
             }
           }
@@ -81,41 +82,44 @@ exports.createPages = async ({ graphql, actions }) => {
     const posts = result.data.allMdx.edges;
 
     posts.forEach((edge, index) => {
+      console.log(edge.node.frontmatter.detail);
       const next = index === 0 ? null : posts[index - 1].node;
       const prev = index === posts.length - 1 ? null : posts[index + 1].node;
 
-      createPage({
-        path: edge.node.fields.slug,
-        component: postTemplate,
-        context: {
-          slug: edge.node.fields.slug,
-          prev,
-          next,
-        },
-      });
-    });
-
-    const categorySet = new Set();
-
-    _.each(posts, edge => {
-      if (_.get(edge, 'node.frontmatter.categories')) {
-        edge.node.frontmatter.categories.forEach(cat => {
-          categorySet.add(cat);
+      if (edge.node.frontmatter.detail) {
+        createPage({
+          path: edge.node.fields.slug,
+          component: postTemplate,
+          context: {
+            slug: edge.node.fields.slug,
+            prev,
+            next,
+          },
         });
       }
     });
 
-    const categories = Array.from(categorySet);
+    // const categorySet = new Set();
 
-    categories.forEach(category => {
-      createPage({
-        path: `/categories/${_.kebabCase(category)}`,
-        component: categoryTemplate,
-        context: {
-          category,
-        },
-      });
-    });
+    // _.each(posts, edge => {
+    //   if (_.get(edge, 'node.frontmatter.categories')) {
+    //     edge.node.frontmatter.categories.forEach(cat => {
+    //       categorySet.add(cat);
+    //     });
+    //   }
+    // });
+
+    // const categories = Array.from(categorySet);
+
+    // categories.forEach(category => {
+    //   createPage({
+    //     path: `/categories/${_.kebabCase(category)}`,
+    //     component: categoryTemplate,
+    //     context: {
+    //       category,
+    //     },
+    //   });
+    // });
 
     return;
   }

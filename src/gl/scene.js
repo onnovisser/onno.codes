@@ -6,7 +6,6 @@ import OBJLoader from './lib/objLoader';
 import TerrainMaterial from './materials/terrain';
 import createCompressedTextureLoader from './utils/createCompressedTextureLoader';
 import { addBarycentricCoordinates, unindexBufferGeometry } from './utils/geom';
-import loadCanvasTexture from './utils/loadCanvasTexture';
 import { lerp, smoothstep } from './utils/math';
 import Ticker from './utils/ticker';
 
@@ -154,16 +153,16 @@ class App {
 
       unindexBufferGeometry(terrain.geometry);
       addBarycentricCoordinates(terrain.geometry, false);
-      Promise.all([loadCanvasTexture('/white.png')]).then(([map]) => {
-        const tex = this.texLoader('/tex-2k');
-        terrain.material = new TerrainMaterial(
-          { map },
-          { tex: { value: tex } },
-          this
-        );
-        this.scene.add(obj);
-        terrain.material.show();
-      });
+
+      const tex = this.texLoader('/tex-2k');
+      const map = this.texLoader('/white');
+      terrain.material = new TerrainMaterial(
+        { map },
+        { tex: { value: tex } },
+        this
+      );
+      this.scene.add(obj);
+      terrain.material.show();
     });
   }
 

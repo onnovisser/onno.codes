@@ -6,7 +6,7 @@ import AllWork from '../components/work/all';
 function WorkPage() {
   return (
     <Page>
-      <PageHeading>I can make anything work</PageHeading>
+      <PageHeading>Here's a selection</PageHeading>
       <AllWork />
     </Page>
   );

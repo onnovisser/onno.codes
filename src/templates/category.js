@@ -4,7 +4,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import config from '../config';
 
-const Category = ({ pageContext: { category }, data: { allMdx } }) => {
+function Category({ pageContext: { category }, data: { allMdx } }) {
   const { totalCount } = allMdx;
   const subline = `${totalCount} post${
     totalCount === 1 ? '' : 's'
@@ -31,18 +31,6 @@ const Category = ({ pageContext: { category }, data: { allMdx } }) => {
 };
 
 export default Category;
-
-Category.propTypes = {
-  pageContext: PropTypes.shape({
-    category: PropTypes.string.isRequired,
-  }).isRequired,
-  data: PropTypes.shape({
-    allMdx: PropTypes.shape({
-      edges: PropTypes.array.isRequired,
-      totalCount: PropTypes.number.isRequired,
-    }),
-  }).isRequired,
-};
 
 export const postQuery = graphql`
   query CategoryPage($category: String!) {
