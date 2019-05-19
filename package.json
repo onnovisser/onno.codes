@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "description": "",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "scripts": {
     "deploy": "./scripts/build.sh",
@@ -13,10 +13,10 @@
     "lint": "eslint . --ext .js --ignore-path .gitignore",
     "lint:fix": "eslint . --ext .js --fix --ignore-path .gitignore",
     "lint:ci": "yarn lint --format junit -o results/eslint/result.xml",
-    "tex:etc1": "texture-compressor -i ./static/tex.jpg -o ./static/tex-etc1.ktx -t etc -c etc1 -y",
-    "tex:astc": "texture-compressor -i ./static/tex.jpg -o ./static/tex-astc-8x5.ktx -t astc -c astc -b 8x5 -y",
-    "tex:s3tc": "texture-compressor -i ./static/tex.jpg -o ./static/tex-dxt1.ktx -t s3tc -c dxt1 -y",
-    "tex:pvrtc": "texture-compressor -i ./static/tex.jpg -o ./static/tex-pvrtc2BPP.ktx -t pvr -c pvrtc1 -y",
+    "tex:etc1": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-etc1.ktx -t etc -c etc1 -y",
+    "tex:astc": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-astc-8x5.ktx -t astc -c astc -b 8x5 -y",
+    "tex:s3tc": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-dxt1.ktx -t s3tc -c dxt1 -y",
+    "tex:pvrtc": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-pvrtc2BPP.ktx -t pvr -c pvrtc1 -y",
     "format": "prettier \"**/*.{js,md,mdx} \" --write"
   },
   "glslify": {
