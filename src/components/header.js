@@ -1,19 +1,44 @@
 import { css } from '@emotion/core';
-import styled from '@emotion/styled';
 import { Link } from 'gatsby';
 import React from 'react';
 import mq from '../style/mq';
 import Content from './content';
 import Socials from './socials';
 
-const TextLink = styled(Link)`
-  color: ${props => props.theme.color.neutralDark};
-  font-family: ${props => props.theme.fontFamily.display};
+function TextLink({ children, ...rest }) {
+  return (
+    <Link
+      css={theme => css`
+        position: relative;
+        color: ${theme.color.neutralDark};
+        font-family: ${theme.fontFamily.display};
 
-  ${mq.mediumUp} {
-    margin-right: 40px;
-  }
-`;
+        ${mq.mediumUp} {
+          margin-right: 40px;
+        }
+      `}
+      activeClassName="active"
+      {...rest}
+    >
+      <span
+        css={theme => css`
+          display: none;
+          width: 100%;
+          height: 2px;
+          position: absolute;
+          left: 0;
+          top: calc(50% - 2px);
+          background: ${theme.color.neutralDark};
+
+          .active & {
+            display: block;
+          }
+        `}
+      />
+      {children}
+    </Link>
+  );
+}
 
 function Header() {
   return (
