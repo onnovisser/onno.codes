@@ -21,7 +21,6 @@ function AboutPage({ data }) {
   return (
     <Page>
       <PageHeading />
-
       <Content
         as={LinedBlock}
         noPaddingMobile

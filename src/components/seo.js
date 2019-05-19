@@ -159,7 +159,6 @@ function SEO({ postNode, postPath, article, buildTime }) {
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="image" content={image} />
-      <meta name="gatsby-starter" content="Gatsby Starter Minimal Blog" />
       <meta property="og:locale" content={config.ogLanguage} />
       <meta
         property="og:site_name"

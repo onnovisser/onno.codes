@@ -56,7 +56,7 @@ class App {
 
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
-      // antialias: true,
+      // antialias: true // Doesn't work together with PostProcessing
       canvas,
       pixelRatio,
     });
@@ -97,35 +97,34 @@ class App {
   }
 
   initGeometry() {
-    const floorGeometry = new THREE.PlaneGeometry(100, 100, 50, 50);
-    const floorMaterial = new THREE.MeshLambertMaterial({ wireframe: false });
-    this.floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    this.floor.position.y = -5;
-    this.floor.rotateX(-0.5 * Math.PI);
-    this.floor.receiveShadow = true;
-    this.scene.add(this.floor);
+    // const floorGeometry = new THREE.PlaneGeometry(100, 100, 50, 50);
+    // const floorMaterial = new THREE.MeshLambertMaterial({ wireframe: false });
+    // this.floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    // this.floor.position.y = -5;
+    // this.floor.rotateX(-0.5 * Math.PI);
+    // this.floor.receiveShadow = true;
+    // this.scene.add(this.floor);
 
-    const backgroundGeometry = new THREE.SphereGeometry(1000, 10, 10);
-    const backgroundMaterial = new THREE.MeshLambertMaterial({
-      color: 0xff0000,
-      side: THREE.BackSide,
-    });
-    this.background = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
+    // const backgroundGeometry = new THREE.SphereGeometry(1000, 10, 10);
+    // const backgroundMaterial = new THREE.MeshLambertMaterial({
+    //   color: 0xff0000,
+    //   side: THREE.BackSide,
+    // });
+    // this.background = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
     // scene.add(background);
 
-    const ballGeometry = new THREE.SphereGeometry(2, 10, 10);
-    const ballMaterial = new THREE.MeshLambertMaterial({
-      color: 0xff0000,
-    });
-    const ball = new THREE.Mesh(ballGeometry, ballMaterial);
-    ball.castShadow = true;
-    ball.receiveShadow = false;
-    // scene.add(ball);
-    ball.position.set(330, 120, 60);
-    // ball.position.set(0, 5, 0)
+    // const ballGeometry = new THREE.SphereGeometry(2, 10, 10);
+    // const ballMaterial = new THREE.MeshLambertMaterial({
+    //   color: 0xff0000,
+    // });
+    // const ball = new THREE.Mesh(ballGeometry, ballMaterial);
+    // ball.castShadow = true;
+    // ball.receiveShadow = false;
+    // this.scene.add(ball);
+    // ball.position.set(330, 120, 60);
 
     const light = new THREE.DirectionalLight(0xffffff, 1);
-    const helper = new THREE.DirectionalLightHelper(light, 200);
+    // const helper = new THREE.DirectionalLightHelper(light, 200);
     // scene.add(helper);
     light.position.set(1, 8, 4);
     light.castShadow = true;
@@ -156,7 +155,7 @@ class App {
       unindexBufferGeometry(terrain.geometry);
       addBarycentricCoordinates(terrain.geometry, false);
       Promise.all([loadCanvasTexture('/white.png')]).then(([map]) => {
-        const tex = this.texLoader('/tex');
+        const tex = this.texLoader('/tex-2k');
         terrain.material = new TerrainMaterial(
           { map },
           { tex: { value: tex } },
