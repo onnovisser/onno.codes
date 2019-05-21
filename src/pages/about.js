@@ -83,8 +83,8 @@ function AboutPage({ data }) {
               <Text>
                 Onno Visser is a 29 year old developer born in Delft, The
                 Netherlands. As a self-taught programmer with a background in
-                User Experience Design, he combines his love of all things web
-                to create experiences that connect with users.
+                user experience research and design, he uses his love of all
+                things web to create experiences that connect with users.
               </Text>
             </div>
           </Content>
