@@ -71,9 +71,8 @@ function Header() {
           `}
         >
           <TextLink to="/">Home</TextLink>
-          <TextLink to="/work">Work</TextLink>
-          <TextLink to="/about">About</TextLink>
-          {/* <TextLink to="/lab">Lab</TextLink> */}
+          <TextLink to="/work/">Work</TextLink>
+          <TextLink to="/about/">About</TextLink>
         </nav>
         <Socials
           css={css`

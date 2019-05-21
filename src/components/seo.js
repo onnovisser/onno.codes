@@ -67,10 +67,10 @@ function SEO({ postNode, postPath, article, buildTime }) {
     },
     datePublished: '2019-01-07T10:30:00+01:00',
     dateModified: buildTime,
-    image: {
-      '@type': 'ImageObject',
-      url: image,
-    },
+    // image: {
+    //   '@type': 'ImageObject',
+    //   url: image,
+    // },
   };
 
   // Initial breadcrumb list
@@ -116,10 +116,10 @@ function SEO({ postNode, postPath, article, buildTime }) {
       publisher: {
         '@type': 'Organization',
         name: config.author,
-        logo: {
-          '@type': 'ImageObject',
-          url: `${homeURL}${config.siteLogo}`,
-        },
+        // logo: {
+        //   '@type': 'ImageObject',
+        //   url: `${homeURL}${config.siteLogo}`,
+        // },
       },
       datePublished: postNode.parent.birthtime,
       dateModified: postNode.parent.mtime,

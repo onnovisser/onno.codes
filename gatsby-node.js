@@ -18,7 +18,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       Object.prototype.hasOwnProperty.call(node, 'frontmatter') &&
       Object.prototype.hasOwnProperty.call(node.frontmatter, 'title')
     ) {
-      slug = `/${_.kebabCase(node.frontmatter.title)}`;
+      slug = `/${_.kebabCase(node.frontmatter.title)}/`;
     }
     createNodeField({ node, name: 'slug', value: slug });
 
@@ -82,7 +82,6 @@ exports.createPages = async ({ graphql, actions }) => {
     const posts = result.data.allMdx.edges;
 
     posts.forEach((edge, index) => {
-      console.log(edge.node.frontmatter.detail);
       const next = index === 0 ? null : posts[index - 1].node;
       const prev = index === posts.length - 1 ? null : posts[index + 1].node;
 
