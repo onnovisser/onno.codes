@@ -2,6 +2,7 @@ import { css } from '@emotion/core';
 import { graphql, useStaticQuery } from 'gatsby';
 import React from 'react';
 import SEO from './seo';
+import Header from './header';
 
 Page.defaultProps = {
   customSEO: false,
@@ -19,6 +20,7 @@ function Page({ children, customSEO }) {
   return (
     <>
       {!customSEO && <SEO buildTime={data.site.buildTime} />}
+      <Header />
       {children}
       <footer
         css={css`
