@@ -152,7 +152,7 @@ function FeaturedWork() {
         `}
       >
         <Content>
-          <Heading as={Link} to="/work">
+          <Heading as={Link} to="/work/">
             More work <ArrowRightIcon />
           </Heading>
         </Content>

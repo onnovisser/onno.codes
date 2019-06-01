@@ -1,8 +1,10 @@
 import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { graphql } from 'gatsby';
 import Image from 'gatsby-image';
 import React, { useEffect } from 'react';
 import Content from '../components/content';
+import Heading from '../components/heading';
 import LinedBlock from '../components/linedBlock';
 import Page from '../components/page';
 import PageHeading from '../components/pageHeading';
@@ -66,17 +68,24 @@ function AboutPage({ data }) {
               css={css`
                 display: flex;
                 flex-direction: column;
+
+                > * + * {
+                  margin: 3em 0 -2em;
+                  &:last-child {
+                    margin-bottom: 0;
+                  }
+                }
               `}
             >
               <Socials
                 css={css`
                   display: flex;
                   justify-content: center;
-                  margin-bottom: 20px;
+                  margin-bottom: -20px;
                   ${mq.mediumUp} {
                     order: 1;
                     display: block;
-                    margin: 20px 0 0;
+                    margin: 40px 0 0;
                   }
                 `}
               />
@@ -86,11 +95,99 @@ function AboutPage({ data }) {
                 user experience research and design, he uses his love of all
                 things web to create experiences that connect with users.
               </Text>
+              <Heading size={500}>Commercial toolkit</Heading>
+              <TagList>
+                {[
+                  'Git',
+                  'HTML',
+                  'CSS',
+                  'Sass',
+                  'JS',
+                  'React',
+                  'Redux',
+                  'GraphQL',
+                  'Webpack',
+                  'Babel',
+                  'Jest',
+                  'ThreeJS',
+                  'WebGL',
+                ].map(tech => (
+                  <Tag>{tech}</Tag>
+                ))}
+              </TagList>
+              <Heading size={500}>Knows his way around</Heading>
+              <TagList>
+                {[
+                  'TypeScript',
+                  'Node',
+                  'MongoDB',
+                  'NextJS',
+                  'GatsbyJS',
+                  'Service Workers',
+                  'BackboneJS',
+                  'PHP',
+                  'Phalcon',
+                ].map(tech => (
+                  <Tag>{tech}</Tag>
+                ))}
+              </TagList>
+              <Heading size={500}>Dabbled with</Heading>
+              <TagList>
+                {['Docker', 'Postgres'].map(tech => (
+                  <Tag>{tech}</Tag>
+                ))}
+              </TagList>
             </div>
           </Content>
         </LinedBlock>
       </Content>
     </Page>
+  );
+}
+
+const TagList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+`;
+
+function Tag({ children }) {
+  return (
+    <Text
+      size={200}
+      as="li"
+      css={({ color }) => css`
+        display: inline;
+        padding: 5px 10px;
+        border: 1px solid ${color.neutralLight};
+        border-width: 0 1px 1px 0;
+        position: relative;
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: -1px;
+          background-color: ${color.neutralLight};
+          z-index: 1;
+        }
+
+        &::before {
+          width: 100%;
+          height: 1px;
+        }
+
+        &::after {
+          left: -1px;
+          width: 1px;
+          height: 100%;
+        }
+      `}
+    >
+      {children}
+    </Text>
   );
 }
 

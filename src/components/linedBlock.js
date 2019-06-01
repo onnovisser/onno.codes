@@ -27,7 +27,7 @@ const LinedBlock = styled.div`
   ${({ vertical, theme }) =>
     vertical &&
     css`
-      box-shadow: 1px 0 0 0 ${theme.color.neutralLight};
+      box-shadow: 1px 0 0 0 ${theme.color.neutralLight}; /* Instead of absolutely positioned line to prevent 1px overflow */
 
       &::before {
         width: 1px;
