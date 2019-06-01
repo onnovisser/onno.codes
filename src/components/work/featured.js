@@ -51,7 +51,7 @@ function FeaturedWork() {
           <Fragment key={node.fields.slug}>
             <div
               css={css`
-                & + & {
+                & ~ & {
                   margin-top: 10vh;
                 }
 
@@ -99,7 +99,7 @@ function FeaturedWork() {
                       <Content
                         paddingY
                         css={css`
-                          > * + * {
+                          > :not(style) ~ :not(style) {
                             margin-top: 1em;
                           }
                         `}
