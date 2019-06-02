@@ -70,18 +70,35 @@ function unindexBufferGeometry(bufferGeometry) {
   });
 }
 
-function computeCentroid(geometry, face, v) {
-  let a = geometry.vertices[face.a];
-  let b = geometry.vertices[face.b];
-  let c = geometry.vertices[face.c];
+function computeCentroids(bufferGeometry) {
+  const attrib = bufferGeometry.getAttribute('position');
+  const count = attrib.count / 3;
+  const pos = attrib.array;
+  const centroids = [];
 
-  v = v || new THREE.Vector3();
+  for (let i = 0; i < count; i++) {
+    const j = i * 9;
+    const x = (pos[j] + pos[j + 3] + pos[j + 6]) / 3;
+    const y = (pos[j + 1] + pos[j + 4] + pos[j + 7]) / 3;
+    const z = (pos[j + 2] + pos[j + 5] + pos[j + 8]) / 3;
 
-  v.x = (a.x + b.x + c.x) / 3;
-  v.y = (a.y + b.y + c.y) / 3;
-  v.z = (a.z + b.z + c.z) / 3;
+    centroids[j] = x;
+    centroids[j + 1] = y;
+    centroids[j + 2] = z;
 
-  return v;
+    centroids[j + 3] = x;
+    centroids[j + 4] = y;
+    centroids[j + 5] = z;
+
+    centroids[j + 6] = x;
+    centroids[j + 7] = y;
+    centroids[j + 8] = z;
+  }
+
+  // add the attribute to the geometry
+  const array = new Float32Array(centroids);
+  const attribute = new THREE.BufferAttribute(array, 3);
+  bufferGeometry.addAttribute('centroid', attribute);
 }
 
 function createAttribute(geometry, name, itemSize, factory, perFace) {
@@ -128,5 +145,5 @@ export {
   addBarycentricCoordinates,
   unindexBufferGeometry,
   createAttribute,
-  computeCentroid,
+  computeCentroids,
 };

@@ -6295,6 +6295,11 @@ glsl-resolve@0.0.1:
     resolve "^0.6.1"
     xtend "^2.1.2"
 
+glsl-rotate@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/glsl-rotate/-/glsl-rotate-1.0.0.tgz#dcc49444022d8282d31d840eb685b4974cae6c6d"
+  integrity sha512-SEeQqyEvmFo70V947c1m7tZsXfA7jxSM3apNNkPP6hkTLQUk+fr/AO0yhqge2rhVZyjky/HNG0w/f1uY98ep9A==
+
 glsl-token-assignments@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/glsl-token-assignments/-/glsl-token-assignments-2.0.2.tgz#a5d82ab78499c2e8a6b83cb69495e6e665ce019f"

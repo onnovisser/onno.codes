@@ -5,7 +5,7 @@ import Renderer from './effects/renderer';
 import OBJLoader from './lib/objLoader';
 import TerrainMaterial from './materials/terrain';
 import createCompressedTextureLoader from './utils/createCompressedTextureLoader';
-import { addBarycentricCoordinates, unindexBufferGeometry } from './utils/geom';
+import { addBarycentricCoordinates, unindexBufferGeometry, computeCentroid, computeCentroids } from './utils/geom';
 import { lerp, smoothstep } from './utils/math';
 import Ticker from './utils/ticker';
 
@@ -31,6 +31,7 @@ class App {
   ticker = new Ticker();
   emitter = createEmitter();
   focalLength = 10.801;
+
   async init(canvas, windowWidth, windowHeight, pixelRatio) {
     this.scene = new THREE.Scene();
     this.scene.fog = new THREE.Fog(0xfafafc, 0, 1000);
@@ -60,9 +61,9 @@ class App {
       pixelRatio,
     });
 
-    this.renderer.shadowMap.enabled = true;
-    // this.renderer.shadowMap.type = THREE.PCFShadowMap;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // this.renderer.shadowMap.enabled = true;
+    // // this.renderer.shadowMap.type = THREE.PCFShadowMap;
+    // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.setClearColor(0xfafafc);
     const gl = this.renderer.getContext();
     gl.enable(gl.SAMPLE_ALPHA_TO_COVERAGE);
@@ -139,13 +140,19 @@ class App {
     light.shadow.camera.bottom = -250;
     this.scene.add(light);
 
+
+    const light2 = new THREE.DirectionalLight(0xff0000, 30);
+    // const helper = new THREE.DirectionalLightHelper(light, 200);
+    // scene.add(helper);
+    light2.position.set(0, -1, 0);
+    // this.scene.add(light2);
+
     console.log(light.shadow.camera);
     // scene.add(new THREE.CameraHelper(light.shadow.camera));
     // light.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 1200, 2500 ) );
 
     const loader = new OBJLoader();
     loader.load('/test.obj', obj => {
-      console.log(obj);
       const terrain = obj.children[0];
 
       terrain.castShadow = true;
@@ -153,6 +160,7 @@ class App {
 
       unindexBufferGeometry(terrain.geometry);
       addBarycentricCoordinates(terrain.geometry, false);
+      computeCentroids(terrain.geometry);
 
       const tex = this.texLoader('/tex-2k');
       const map = this.texLoader('/white');

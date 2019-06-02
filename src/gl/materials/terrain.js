@@ -13,6 +13,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     uniforms: {
       // tex: { value: loadTexture('/tex.jpg') },
       time: { value: performance.now() / 1000 },
+      explodeModifier: { value: 0 },
       fill: { value: new THREE.Color(0xfafafc) },
       // stroke: { value: new THREE.Color(0xd6d8e0) },
       stroke: { value: new THREE.Color(0xbbbccd) },
@@ -35,16 +36,21 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
       squeezeMin: { value: 0.3 },
       squeezeMax: { value: 1 },
     },
-    vertexParameters: /* glsl */ `
+    vertexParameters: glsl`
       uniform float time;
       uniform float buildupProgress;
+      uniform float explodeModifier;
 
       attribute vec3 barycentric;
+      attribute vec3 centroid;
       attribute float even;
 
       varying vec3 vBarycentric;
       varying vec3 vPosition;
       varying float vEven;
+
+      #pragma glslify: rotateY = require(glsl-rotate/rotateY)
+      #pragma glslify: rotate = require(glsl-rotate/rotate)
 
       // varying vec2 vUv;
       // uniform mat3 uvTransform;
@@ -53,7 +59,24 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
       vBarycentric = barycentric;
       vPosition = position.xyz;
       vEven = even;
-      // transformed.y = max(0., transformed.y * buildupProgress);
+
+      // vec3 worldCenter = vec3(285, 114, 0);
+      vec3 worldCenter = vec3(345, 114, 56);
+      vec3 positionFromCentroid = position.xyz - centroid;
+      transformed.xyz = centroid;
+      float explodeInfluence = clamp(1. - distance(transformed.xz, worldCenter.xz) * .015, 0., 1.);
+      explodeInfluence = pow(explodeInfluence, 8.);
+      positionFromCentroid = rotate(positionFromCentroid, vec3(0, 0, 1), (explodeModifier * (sin(time + 1000. * normal.x) * .25 + .25) ) * explodeInfluence * 8.);
+      transformed += positionFromCentroid;
+
+      vec3 positionFromCenter = transformed.xyz - worldCenter;
+      transformed -= positionFromCenter;
+      positionFromCenter = rotateY(positionFromCenter, explodeModifier * explodeInfluence * 8.);
+      transformed += positionFromCenter;
+
+
+      transformed.y += explodeModifier * explodeInfluence * 60.;
+
       // vUv = ( uvTransform * vec3( uv, 1 ) ).xy;
     `,
     fragmentParameters: glsl`
@@ -164,6 +187,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
   };
 
   terrainState = terrainStates.WIREFRAME;
+  explodeModifierTarget = 0;
   visible = false;
 
   constructor(props, uniforms, app) {
@@ -171,7 +195,8 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
       ...props,
       // map: loadTexture('/white.png'),
       color: new THREE.Color(0xfafafc),
-      flatShading :true,
+      flatShading: true,
+      side: THREE.DoubleSide
     });
     this.app = app;
     this.addedUniforms = uniforms;
@@ -224,6 +249,10 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     // }
     this.app.emitter.on('update', this.update);
     this.app.emitter.onWithLast('changePage', this.setState);
+    this.app.emitter.onWithLast(
+      'changeExplodeModifier',
+      this.setExplodeModifier
+    );
 
     // gui
     //   .addNew('terrain', 0.99, 0, 1)
@@ -242,9 +271,15 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
 
     this.uniforms.buildupProgress.value = lerp(
       this.uniforms.buildupProgress.value,
-      this.visible ? 1: 0,
-      delta * .5
+      this.visible ? 1 : 0,
+      delta * 0.5
     );
+
+    this.uniforms.explodeModifier.value = lerp(
+      this.uniforms.explodeModifier.value,
+      this.explodeModifierTarget,
+      delta * 8
+    );;
   };
 
   setState = state => {
@@ -254,6 +289,10 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     } else {
       this.terrainState = terrainStates.TEXTURE;
     }
+  };
+
+  setExplodeModifier = value => {
+    this.explodeModifierTarget = value;
   };
 
   show() {

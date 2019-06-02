@@ -25,6 +25,10 @@ async function init(canvas) {
     scene.emitter.emit('changePage', evt);
   });
 
+  emitter.onWithLast('changeExplodeModifier', value => {
+    scene.emitter.emit('changeExplodeModifier', value);
+  });
+
   window.addEventListener('resize', () => {
     scene.resize(
       window.innerWidth,

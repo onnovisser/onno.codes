@@ -106,7 +106,7 @@ function AboutPage({ data }) {
                   'React',
                   'Redux',
                   'GraphQL',
-                  'Webpack',
+                  'webpack',
                   'Babel',
                   'Jest',
                   'ThreeJS',
