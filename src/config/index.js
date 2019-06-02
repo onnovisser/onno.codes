@@ -14,7 +14,6 @@ module.exports = {
   author: 'Onno Visser', // Author for schemaORGJSONLD
   // siteLogo: '/social/logo.png', // Image for schemaORGJSONLD
 
-  // siteFBAppID: '123456789', // Facebook App ID - Optional
   userTwitter: '@_onnovisser', // Twitter Username - Optional
   // ogSiteName: 'minimal', // Facebook Site Name - Optional
   ogLanguage: 'en_US', // Facebook Language

@@ -154,49 +154,49 @@ function SEO({ postNode, postPath, article, buildTime }) {
   };
 
   return (
-    <Helmet>
-      <html lang={config.siteLanguage} />
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="image" content={image} />
-      <meta property="og:locale" content={config.ogLanguage} />
-      <meta
-        property="og:site_name"
-        content={config.ogSiteName ? config.ogSiteName : ''}
-      />
-      <meta property="og:url" content={URL} />
-      <meta property="og:type" content={article ? 'article' : 'website'} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:image:alt" content={description} />
-      {config.siteFBAppID && (
-        <meta property="fb:app_id" content={config.siteFBAppID} />
-      )}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta
-        name="twitter:creator"
-        content={config.userTwitter ? config.userTwitter : ''}
-      />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:url" content={config.siteUrl} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
-      <meta name="twitter:image:alt" content={description} />
-      {/* Insert schema.org data conditionally (webpage/article) + everytime (breadcrumbs) */}
-      {!article && (
-        <script type="application/ld+json">
-          {JSON.stringify(schemaOrgWebPage)}
-        </script>
-      )}
-      {article && (
-        <script type="application/ld+json">
-          {JSON.stringify(schemaArticle)}
-        </script>
-      )}
-      <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
-    </Helmet>
+    <Helmet
+      title={title}
+      htmlAttributes={{ lang: config.siteLanguage }}
+      meta={[
+        { name: 'description', content: description },
+        { name: 'name', content: image },
+        { property: 'og:locale', content: config.ogLanguage },
+        config.ogSiteName && {
+          property: 'og:site_name',
+          content: config.ogSiteName,
+        },
+        { property: 'og:url', content: URL },
+        { property: 'og:type', content: article ? 'article' : 'website' },
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: description },
+        { property: 'og:image', content: image },
+        { property: 'og:image:alt', content: description },
+        { property: 'twitter:card', content: 'summary_large_image' },
+        {
+          property: 'twitter:creator',
+          content: config.userTwitter ? config.userTwitter : '',
+        },
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:url', content: config.siteUrl },
+        { name: 'twitter:description', content: description },
+        { name: 'twitter:image', content: image },
+        { name: 'twitter:image:alt', content: description },
+      ].filter(Boolean)}
+      script={[
+        // Insert schema.org data conditionally (webpage/article) + everytime (breadcrumbs)
+        {
+          type: 'application/ld+json',
+          innerHTML: article
+            ? JSON.stringify(schemaArticle)
+            : JSON.stringify(schemaOrgWebPage),
+        },
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(breadcrumb),
+        },
+      ]}
+    />
   );
-};
+}
 
 export default SEO;
