@@ -54,6 +54,10 @@ function IndexPage() {
     emitter.emit('changeExplodeModifier', hovered ? 1 : 0);
   }, [hovered]);
 
+  useEffect(() => () => {
+    emitter.emit('changeExplodeModifier', 0);
+  }, []);
+
   const word = hovered ? 'Break' : 'Make';
 
   return (

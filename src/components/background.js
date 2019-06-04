@@ -16,7 +16,7 @@ function Background() {
         if (performance.now() > 4000) {
           // slow network, don't load all the webgl stuff
           // TODO: Maybe show something as a fallback
-          return;
+          // return;
         }
         init(ref.current).then(() => {
           setVisible(true);
@@ -35,7 +35,7 @@ function Background() {
         height: 100%;
         z-index: 0;
         opacity: 0;
-        transition: opacity .5s ease .5s;
+        transition: opacity .5s ease .25s;
 
         ${visible &&
           css`

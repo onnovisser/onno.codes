@@ -12,6 +12,7 @@ import {
 } from './utils/geom';
 import { lerp, smoothstep } from './utils/math';
 import Ticker from './utils/ticker';
+import createDeferredPromise from '../utils/createDeferredPromise';
 
 // 1.00 19
 // 1.10 17.1
@@ -34,6 +35,7 @@ class App {
   state = states.DEFAULT;
   ticker = new Ticker();
   emitter = createEmitter();
+  loadPromise = createDeferredPromise();
   focalLength = 10.801;
 
   async init(canvas, windowWidth, windowHeight, pixelRatio) {
@@ -98,6 +100,8 @@ class App {
     this.emitter.onWithLast('changePage', this.setState);
     this.ticker.on('tick', this.update);
     this.ticker.start();
+
+    await this.loadPromise;
   }
 
   initGeometry() {
@@ -166,6 +170,7 @@ class App {
       );
       this.scene.add(obj);
       terrain.material.show();
+      this.loadPromise.resolve();
 
       // const floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
       // const floorMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, fog: false });
