@@ -1,6 +1,7 @@
 import glsl from 'glslify';
 import * as THREE from 'three';
 // import gui from '../gui';
+import anime from 'animejs';
 import { lerp } from '../utils/math';
 
 const terrainStates = {
@@ -52,6 +53,19 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
       #pragma glslify: rotateY = require(glsl-rotate/rotateY)
       #pragma glslify: rotate = require(glsl-rotate/rotate)
 
+      float linearWithOffset(float x, int index, int total) {
+        return clamp(float(total) * x - float(index) / (float(total) - 1.) * 2., 0., 1.);
+      }
+
+      float linearOverlappingWithOffset(float x, int index, int total) {
+        return clamp(.5 * float(total) * x - (.5 * float(index)) / (float(total) - 1.), 0., 1.);
+      }
+
+      float easeInOutWithOffset(float x, int index, int total) {
+        float v = linearOverlappingWithOffset(x, index, total);
+        return 1. / (1. + pow(3., -1. * (10. * v - 5.)));
+      }
+
       // varying vec2 vUv;
       // uniform mat3 uvTransform;
     `,
@@ -60,22 +74,37 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
       vPosition = position.xyz;
       vEven = even;
 
-      // vec3 worldCenter = vec3(285, 114, 0);
+      vec3 worldRight = vec3(295, 114, -40);
       vec3 worldCenter = vec3(345, 114, 56);
+      vec3 worldLeft = vec3(215, 114, 166);
       vec3 positionFromCentroid = position.xyz - centroid;
       transformed.xyz = centroid;
-      float explodeInfluence = clamp(1. - distance(transformed.xz, worldCenter.xz) * .015, 0., 1.);
-      explodeInfluence = pow(explodeInfluence, 8.);
-      positionFromCentroid = rotate(positionFromCentroid, vec3(0, 0, 1), (explodeModifier * (sin(time + 1000. * normal.x) * .25 + .25) ) * explodeInfluence * 8.);
+      float distanceFromCenter = distance(transformed.xz, worldCenter.xz);
+      float distanceFromLeft = distance(transformed.xz, worldLeft.xz);
+      float distanceFromRight = distance(transformed.xz, worldRight.xz);
+      float explodeMultiplier = clamp(easeInOutWithOffset(explodeModifier, 0, 3) * (1. - distanceFromCenter * .03), 0., 1.);
+      explodeMultiplier += clamp(easeInOutWithOffset(explodeModifier, 1, 3) * (1. - distanceFromLeft * .03), 0., 1.);
+      explodeMultiplier += clamp(easeInOutWithOffset(explodeModifier, 2, 3) * (1. - distanceFromRight * .03), 0., 1.);
+      float explodeMultiplierEaseIn = pow(explodeMultiplier, 4.);
+      float explodeMultiplierEaseIn2 = pow(explodeMultiplier, 2.);
+      float explodeMultiplierEaseOut = pow(explodeMultiplier - 1., 3.) + 1.;
+      positionFromCentroid = rotate(positionFromCentroid, normalize(vec3(1, 0, 1)), ((sin(time + 1000. * normal.x) * .25 + .25)) * explodeMultiplierEaseIn2 * (8. + normal.x * 12.));
       transformed += positionFromCentroid;
 
-      vec3 positionFromCenter = transformed.xyz - worldCenter;
-      transformed -= positionFromCenter;
-      positionFromCenter = rotateY(positionFromCenter, explodeModifier * explodeInfluence * 8.);
-      transformed += positionFromCenter;
+      vec3 positionFromExlosion;
+      if (position.z > 105.) {
+        positionFromExlosion = transformed.xyz - worldLeft;
+      } else if (position.z > 5.) {
+        positionFromExlosion = transformed.xyz - worldCenter;
+      } else {
+        positionFromExlosion = transformed.xyz - worldRight;
+      }
+      transformed -= positionFromExlosion;
+      positionFromExlosion = rotateY(positionFromExlosion, explodeMultiplierEaseIn * 8.);
+      transformed += positionFromExlosion;
 
 
-      transformed.y += explodeModifier * explodeInfluence * 60.;
+      transformed.y += explodeMultiplierEaseIn * 60.;
 
       // vUv = ( uvTransform * vec3( uv, 1 ) ).xy;
     `,
@@ -183,6 +212,10 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
 
         // gl_FragColor.rgb = (gl_FragColor.rgb / 2. + .5) * wireframe.rgb;
         // gl_FragColor = vec4(vec3(influence), 1.);
+
+        if (!gl_FrontFacing && vPosition.x > 150.) {
+          gl_FragColor.rgb = vec3(.0);
+        }
       `,
   };
 
@@ -275,11 +308,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
       delta * 0.5
     );
 
-    this.uniforms.explodeModifier.value = lerp(
-      this.uniforms.explodeModifier.value,
-      this.explodeModifierTarget,
-      delta * 8
-    );;
+    this.uniforms.explodeModifier.value = this.explodeModifierTarget;
   };
 
   setState = state => {
@@ -292,7 +321,12 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
   };
 
   setExplodeModifier = value => {
-    this.explodeModifierTarget = value;
+    anime({
+      targets: this,
+      explodeModifierTarget: value,
+      duration: 1600,
+      easing: 'linear',
+    })
   };
 
   show() {

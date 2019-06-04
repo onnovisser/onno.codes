@@ -107,7 +107,7 @@ function createColorShader(canvasWidth, canvasHeight) {
 
     void main() {
       // vec2 uv = gl_FragCoord.xy / uResolution;
-      vec2 direction = ( vUv - .5 ) * 10.0;
+      vec2 direction = ( vUv - .5 ) * 6.0;
 
       gl_FragColor = ca( tDiffuse, vUv, uResolution.xy, direction );
 

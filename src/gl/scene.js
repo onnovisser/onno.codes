@@ -5,7 +5,11 @@ import Renderer from './effects/renderer';
 import OBJLoader from './lib/objLoader';
 import TerrainMaterial from './materials/terrain';
 import createCompressedTextureLoader from './utils/createCompressedTextureLoader';
-import { addBarycentricCoordinates, unindexBufferGeometry, computeCentroid, computeCentroids } from './utils/geom';
+import {
+  addBarycentricCoordinates,
+  computeCentroids,
+  unindexBufferGeometry,
+} from './utils/geom';
 import { lerp, smoothstep } from './utils/math';
 import Ticker from './utils/ticker';
 
@@ -97,14 +101,6 @@ class App {
   }
 
   initGeometry() {
-    // const floorGeometry = new THREE.PlaneGeometry(100, 100, 50, 50);
-    // const floorMaterial = new THREE.MeshLambertMaterial({ wireframe: false });
-    // this.floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    // this.floor.position.y = -5;
-    // this.floor.rotateX(-0.5 * Math.PI);
-    // this.floor.receiveShadow = true;
-    // this.scene.add(this.floor);
-
     // const backgroundGeometry = new THREE.SphereGeometry(1000, 10, 10);
     // const backgroundMaterial = new THREE.MeshLambertMaterial({
     //   color: 0xff0000,
@@ -140,7 +136,6 @@ class App {
     light.shadow.camera.bottom = -250;
     this.scene.add(light);
 
-
     const light2 = new THREE.DirectionalLight(0xff0000, 30);
     // const helper = new THREE.DirectionalLightHelper(light, 200);
     // scene.add(helper);
@@ -171,6 +166,15 @@ class App {
       );
       this.scene.add(obj);
       terrain.material.show();
+
+      // const floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+      // const floorMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, fog: false });
+      // this.floor = new THREE.Mesh(floorGeometry, floorMaterial);
+      // // this.floor.position.y = -5;
+      // this.floor.rotateX(-0.5 * Math.PI);
+      // this.floor.position.y = 10;
+      // // this.floor.receiveShadow = true;
+      // this.scene.add(this.floor);
     });
   }
 

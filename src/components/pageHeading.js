@@ -16,7 +16,15 @@ function PageHeading({ children }) {
           text-align: center;
         `}
       >
-        <Heading size={900} weight={700}>
+        <Heading
+          size={900}
+          weight={700}
+          css={css`
+            color: #f5f5f5;
+            mix-blend-mode: difference;
+            will-change: transform; /* Force GPU layer for blend-mode to work with the canvas */
+          `}
+        >
           {children}
         </Heading>
       </div>

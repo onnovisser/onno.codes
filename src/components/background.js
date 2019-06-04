@@ -31,14 +31,7 @@ function Background() {
         top: 0;
         width: 100%;
         height: 100%;
-        opacity: 0;
         z-index: -1;
-
-        ${visible &&
-          css`
-            opacity: 1;
-            transition: opacity 1s ease;
-          `};
       `}
       ref={ref}
     />
