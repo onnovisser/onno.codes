@@ -1,7 +1,7 @@
-import glsl from 'glslify';
-import * as THREE from 'three';
 // import gui from '../gui';
 import anime from 'animejs';
+import glsl from 'glslify';
+import * as THREE from 'three';
 import { lerp } from '../utils/math';
 
 const terrainStates = {
@@ -229,7 +229,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
       // map: loadTexture('/white.png'),
       color: new THREE.Color(0xfafafc),
       flatShading: true,
-      side: THREE.DoubleSide
+      side: THREE.DoubleSide,
     });
     this.app = app;
     this.addedUniforms = uniforms;
@@ -324,9 +324,9 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     anime({
       targets: this,
       explodeModifierTarget: value,
-      duration: 1600,
-      easing: 'linear',
-    })
+      duration: 1500,
+      easing: 'easeOutQuad',
+    });
   };
 
   show() {

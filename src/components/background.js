@@ -10,17 +10,19 @@ function Background() {
 
   useEffect(() => {
     console.log(performance.now());
-    (window.requestIdleCallback ? requestIdleCallback : requestAnimationFrame)(() => {
-      console.log(performance.now());
-      if (performance.now() > 4000) {
-        // slow network, don't load all the webgl stuff
-        // TODO: Maybe show something as a fallback
-        return;
+    (window.requestIdleCallback ? requestIdleCallback : requestAnimationFrame)(
+      () => {
+        console.log(performance.now());
+        if (performance.now() > 4000) {
+          // slow network, don't load all the webgl stuff
+          // TODO: Maybe show something as a fallback
+          return;
+        }
+        init(ref.current).then(() => {
+          setVisible(true);
+        });
       }
-      init(ref.current).then(() => {
-        setVisible(true);
-      });
-    });
+    );
   }, []);
 
   return (
@@ -31,7 +33,14 @@ function Background() {
         top: 0;
         width: 100%;
         height: 100%;
-        z-index: -1;
+        z-index: 0;
+        opacity: 0;
+        transition: opacity .5s ease .5s;
+
+        ${visible &&
+          css`
+            opacity: 1;
+          `};
       `}
       ref={ref}
     />

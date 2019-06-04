@@ -12,9 +12,8 @@ const base = theme => css`
     /* overflow-x: hidden; */
   }
 
-  body {
+  body, #___gatsby {
     background: ${theme.color.neutralLightest};
-    /* background: #f0f0f0; */
   }
 
   ::selection {
