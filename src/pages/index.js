@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Page from '../components/page';
 import PageHeading from '../components/pageHeading';
 import FeaturedWork from '../components/work/featured';
+import mq from '../style/mq';
 import emitter from '../utils/emitter';
 
 const glitch = keyframes`
@@ -54,9 +55,12 @@ function IndexPage() {
     emitter.emit('changeExplodeModifier', hovered ? 1 : 0);
   }, [hovered]);
 
-  useEffect(() => () => {
-    emitter.emit('changeExplodeModifier', 0);
-  }, []);
+  useEffect(
+    () => () => {
+      emitter.emit('changeExplodeModifier', 0);
+    },
+    []
+  );
 
   const word = hovered ? 'Break' : 'Make';
 
@@ -68,7 +72,9 @@ function IndexPage() {
           onMouseOut={() => setHovered(false)}
           css={css`
             cursor: pointer;
-            padding: 60px 100px;
+            ${mq.largeUp} {
+              padding: 60px 100px;
+            }
           `}
         >
           I{' '}
