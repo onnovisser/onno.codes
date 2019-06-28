@@ -50,6 +50,7 @@ function AboutPage({ data }) {
                 border-radius: 50%;
                 display: block;
                 margin: 0 auto 20px;
+                will-change: transform; /* Fixes border-radius in Safari */
 
                 picture img {
                   object-position: center 30% !important;
