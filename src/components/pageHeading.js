@@ -20,9 +20,11 @@ function PageHeading({ children }) {
           size={900}
           weight={700}
           css={css`
-            color: #f5f5f5;
-            mix-blend-mode: difference;
-            will-change: transform; /* Force GPU layer for blend-mode to work with the canvas */
+            @supports (mix-blend-mode: difference) {
+              color: #f5f5f5;
+              mix-blend-mode: difference;
+              will-change: transform; /* Force GPU layer for blend-mode to work with the canvas */
+            }
           `}
         >
           {children}
