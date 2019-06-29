@@ -1,8 +1,10 @@
 import * as THREE from 'three';
+import createDeferredPromise from '../utils/createDeferredPromise';
 import { createEmitter } from '../utils/emitter';
 import Renderer from './effects/renderer';
+import DRACOLoader from './lib/dracoLoader';
+import GLTFLoader from './lib/gltfLoader';
 // import gui from './gui';
-import OBJLoader from './lib/objLoader';
 import TerrainMaterial from './materials/terrain';
 import createCompressedTextureLoader from './utils/createCompressedTextureLoader';
 import {
@@ -12,7 +14,6 @@ import {
 } from './utils/geom';
 import { lerp, smoothstep } from './utils/math';
 import Ticker from './utils/ticker';
-import createDeferredPromise from '../utils/createDeferredPromise';
 
 // 1.00 19
 // 1.10 17.1
@@ -150,9 +151,11 @@ class App {
     // scene.add(new THREE.CameraHelper(light.shadow.camera));
     // light.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 1200, 2500 ) );
 
-    const loader = new OBJLoader();
-    loader.load('/test.obj', obj => {
-      const terrain = obj.children[0];
+    const loader = new GLTFLoader();
+    DRACOLoader.setDecoderPath('/draco-gltf/');
+    loader.setDRACOLoader(new DRACOLoader());
+    loader.load('/terrain-draco.gltf', obj => {
+      const terrain = obj.scene.children[0];
 
       terrain.castShadow = true;
       terrain.receiveShadow = true;
@@ -168,7 +171,7 @@ class App {
         { tex: { value: tex } },
         this
       );
-      this.scene.add(obj);
+      this.scene.add(obj.scene);
       terrain.material.show();
       this.loadPromise.resolve();
 
