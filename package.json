@@ -1,22 +1,22 @@
 {
   "name": "portfolio",
   "description": "",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": true,
   "scripts": {
     "deploy": "./scripts/build.sh",
     "build": "gatsby build",
     "start": "gatsby develop -o",
-    "starts": "gatsby develop -o -H 0.0.0.0 -p 8000",
+    "start:remote": "gatsby develop -o -H 0.0.0.0 -p 8000",
     "develop": "gatsby develop",
     "serve": "gatsby serve",
     "lint": "eslint . --ext .js --ignore-path .gitignore",
     "lint:fix": "eslint . --ext .js --fix --ignore-path .gitignore",
     "lint:ci": "yarn lint --format junit -o results/eslint/result.xml",
-    "tex:etc1": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-etc1.ktx -t etc -c etc1 -y",
-    "tex:astc": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-astc-8x5.ktx -t astc -c astc -b 8x5 -y",
-    "tex:s3tc": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-dxt1.ktx -t s3tc -c dxt1 -y",
-    "tex:pvrtc": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-pvrtc2BPP.ktx -t pvr -c pvrtc1 -y",
+    "tex:etc1": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-etc1.ktx -t etc -c etc1",
+    "tex:astc": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-astc-8x5.ktx -t astc -c astc -b 8x5",
+    "tex:s3tc": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-dxt1.ktx -t s3tc -c dxt1",
+    "tex:pvrtc": "texture-compressor -i ./static/tex-2k.jpg -o ./static/tex-2k-pvrtc2BPP.ktx -t pvr -c pvrtc1",
     "format": "prettier \"**/*.{js,md,mdx} \" --write"
   },
   "glslify": {
