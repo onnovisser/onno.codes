@@ -213,7 +213,7 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
         // gl_FragColor.rgb = (gl_FragColor.rgb / 2. + .5) * wireframe.rgb;
         // gl_FragColor = vec4(vec3(influence), 1.);
 
-        if (!gl_FrontFacing && vPosition.x > 150.) {
+        if (gl_FrontFacing == false && vPosition.x > 150.) {
           gl_FragColor.rgb = vec3(.0);
         }
       `,

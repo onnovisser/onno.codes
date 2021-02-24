@@ -163,9 +163,8 @@ class App {
       unindexBufferGeometry(terrain.geometry);
       addBarycentricCoordinates(terrain.geometry, false);
       computeCentroids(terrain.geometry);
-      
+
       this.scene.add(obj.scene);
-      terrain.material.show();
       this.loadPromise.resolve();
 
       const tex = this.texLoader('/tex-2k');
@@ -175,6 +174,8 @@ class App {
         { tex: { value: tex } },
         this
       );
+
+      terrain.material.show();
 
       // const floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
       // const floorMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, fog: false });
