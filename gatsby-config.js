@@ -12,8 +12,6 @@ module.exports = {
     'gatsby-plugin-glslify',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-emotion',
-    'gatsby-plugin-sharp',
-    'gatsby-transformer-sharp',
     {
       resolve: 'gatsby-source-filesystem',
       options: {
@@ -24,40 +22,43 @@ module.exports = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        name: 'asset',
+        name: 'assets',
         path: `${__dirname}/src/assets`,
       },
     },
-    {
-      resolve: 'gatsby-mdx',
-      options: {
-        gatsbyRemarkPlugins: [
-          {
-            resolve: 'gatsby-remark-external-links',
-            options: {
-              target: '_blank',
-              rel: 'nofollow noopener noreferrer',
-            },
-          },
-          {
-            resolve: 'gatsby-remark-images',
-            options: {
-              maxWidth: 830,
-              quality: 90,
-              withWebp: true,
-              linkImagesToOriginal: false,
-            },
-          },
-          // TODO: Replace with "mdx-component-autolink-headers"
-          {
-            resolve: 'gatsby-remark-autolink-headers',
-            options: {
-              maintainCase: false,
-            },
-          },
-        ],
-      },
-    },
+    'gatsby-plugin-sharp',
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-mdx',
+    // {
+    //   resolve: 'gatsby-mdx',
+    //   options: {
+    //     gatsbyRemarkPlugins: [
+    //       {
+    //         resolve: 'gatsby-remark-external-links',
+    //         options: {
+    //           target: '_blank',
+    //           rel: 'nofollow noopener noreferrer',
+    //         },
+    //       },
+    //       {
+    //         resolve: 'gatsby-remark-images',
+    //         options: {
+    //           maxWidth: 830,
+    //           quality: 90,
+    //           withWebp: true,
+    //           linkImagesToOriginal: false,
+    //         },
+    //       },
+    //       // TODO: Replace with "mdx-component-autolink-headers"
+    //       {
+    //         resolve: 'gatsby-remark-autolink-headers',
+    //         options: {
+    //           maintainCase: false,
+    //         },
+    //       },
+    //     ],
+    //   },
+    // },
     'gatsby-plugin-catch-links',
     'gatsby-plugin-sitemap',
     'gatsby-plugin-lodash',
@@ -74,6 +75,5 @@ module.exports = {
         icon: config.favicon,
       },
     },
-    // 'gatsby-plugin-offline',
   ],
 };

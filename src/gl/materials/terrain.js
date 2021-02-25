@@ -238,7 +238,6 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
     };
   }
   onBeforeCompile = shader => {
-    console.log(shader);
     this.uniforms = shader.uniforms;
     Object.assign(
       this.uniforms,
@@ -312,7 +311,6 @@ class TerrainMaterial extends THREE.MeshPhongMaterial {
   };
 
   setState = state => {
-    console.log('changePage', state);
     if (state === 0) {
       this.terrainState = terrainStates.WIREFRAME;
     } else {

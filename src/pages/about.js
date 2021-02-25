@@ -91,7 +91,7 @@ function AboutPage({ data }) {
                 `}
               />
               <Text>
-                Onno Visser is a 29 year old developer born in Delft, The
+                Onno Visser is a 30 year old developer born in Delft, The
                 Netherlands. As a self-taught programmer with a background in
                 user experience research and design, he uses his love of all
                 things web to create experiences that connect with users.
@@ -124,6 +124,7 @@ function AboutPage({ data }) {
                   'MongoDB',
                   'NextJS',
                   'GatsbyJS',
+                  'Styled Components',
                   'Service Workers',
                   'BackboneJS',
                   'PHP',
@@ -134,7 +135,7 @@ function AboutPage({ data }) {
               </TagList>
               <Heading size={500}>Dabbled with</Heading>
               <TagList>
-                {['Docker', 'Postgres'].map(tech => (
+                {['Docker', 'Postgres', 'Solidity'].map(tech => (
                   <Tag>{tech}</Tag>
                 ))}
               </TagList>
@@ -195,8 +196,9 @@ function Tag({ children }) {
 export const query = graphql`
   query {
     file(relativePath: { eq: "me.jpg" }) {
+      id
       childImageSharp {
-        fluid {
+        fluid(maxWidth: 200) {
           sizes
           base64
           aspectRatio

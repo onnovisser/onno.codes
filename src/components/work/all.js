@@ -102,7 +102,7 @@ const query = graphql`
             slug
             featuredImage {
               childImageSharp {
-                fluid {
+                fluid(maxWidth: 400) {
                   sizes
                   base64
                   aspectRatio

@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import CodepenIcon from './icon/codepen';
 import EmailIcon from './icon/email';
 import GithubIcon from './icon/github';
 import TwitterIcon from './icon/twitter';
@@ -38,15 +37,6 @@ function Socials(props) {
         title="Github"
       >
         <GithubIcon />
-      </IconLink>
-      <IconLink
-        href="https://codepen.io/Penno/"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Codepen"
-        title="Codepen"
-      >
-        <CodepenIcon />
       </IconLink>
     </nav>
   );

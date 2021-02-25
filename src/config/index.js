@@ -10,7 +10,7 @@ module.exports = {
   // siteBanner: '/social/banner.jpg', // Your image for og:image tag. You can find it in the /static folder
   favicon: 'src/assets/favicon.png', // Your image for favicons. You can find it in the /src folder
   siteDescription:
-    'Onno Visser is a 29 year old developer born in Delft, The Netherlands. As a self-taught programmer with a background in user experience research and design, he uses his love of all things web to create experiences that connect with users.',
+    'Onno Visser is a 30 year old developer born in Delft, The Netherlands. As a self-taught programmer with a background in user experience research and design, he uses his love of all things web to create experiences that connect with users.',
   author: 'Onno Visser', // Author for schemaORGJSONLD
   // siteLogo: '/social/logo.png', // Image for schemaORGJSONLD
 

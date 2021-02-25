@@ -36,16 +36,11 @@ export default Post;
 export const postQuery = graphql`
   query postBySlug($slug: String!) {
     mdx(fields: { slug: { eq: $slug } }) {
-      code {
-        body
-      }
-      excerpt
       frontmatter {
         title
         date(formatString: "MM/DD/YYYY")
         categories
       }
-      timeToRead
       parent {
         ... on File {
           mtime
