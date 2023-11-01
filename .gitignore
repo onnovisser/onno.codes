@@ -61,7 +61,9 @@ bundle-stats.json
 # Yarn
 yarn-error.log
 .yarn-integrity
-.yarn
+.yarn/*
+.yarn/cache
+# .yarn
 !.yarn/releases
 !.yarn/plugins
 !.yarn/sdks
