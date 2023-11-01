@@ -3,6 +3,9 @@
   "description": "",
   "version": "0.0.8",
   "private": true,
+  "engines": {
+    "node": "^16"
+  },
   "scripts": {
     "deploy": "./scripts/build.sh",
     "build": "gatsby build",
@@ -85,5 +88,6 @@
     "prettier": "^1.15.3",
     "texture-compressor": "^0.3.9",
     "worker-loader": "^2.0.0"
-  }
+  },
+  "packageManager": "yarn@3.6.3"
 }

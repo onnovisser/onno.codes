@@ -45,10 +45,6 @@ jspm_packages
 # Output of 'npm pack'
 *.tgz
 
-# Yarn Integrity file
-.yarn-integrity
-
-
 # Build Files
 public/
 .cache/
@@ -61,3 +57,12 @@ bundle-stats.json
 
 # Editor
 .vscode
+
+# Yarn
+yarn-error.log
+.yarn-integrity
+.yarn
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
